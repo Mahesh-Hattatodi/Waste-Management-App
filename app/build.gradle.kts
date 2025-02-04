@@ -104,6 +104,7 @@ dependencies {
     // Dagger and hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation (libs.androidx.hilt.navigation.compose)
 
     // Viewmodel
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
