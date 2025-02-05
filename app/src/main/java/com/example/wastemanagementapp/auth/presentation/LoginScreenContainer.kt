@@ -28,6 +28,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -78,7 +79,6 @@ fun LoginScreenContainer(
         }
     }
 
-
     LoginScreen(
         onGoogleSignInClick = {
             scope.launch {
@@ -89,7 +89,11 @@ fun LoginScreenContainer(
         },
         onEvent = viewModel::onEvent,
         email = viewModel.email,
-        password = viewModel.password
+        password = viewModel.password,
+        isLoginEnabled = viewModel.isLoginEnabled,
+        onChangeLoginButtonState = {
+            viewModel.changeLoginButtonState()
+        }
     )
 }
 
@@ -98,8 +102,13 @@ fun LoginScreen(
     onGoogleSignInClick: () -> Unit = {},
     onEvent: (LoginEvent) -> Unit = {},
     email: String = "",
-    password: String = ""
+    password: String = "",
+    isLoginEnabled: Boolean = false,
+    onChangeLoginButtonState: () -> Unit = {}
 ) {
+    LaunchedEffect(key1 = email, key2 = password) {
+        onChangeLoginButtonState()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -213,8 +222,10 @@ fun LoginScreen(
         Button(
             onClick = { onEvent(LoginEvent.OnSignInClick) },
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer
-            )
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.tertiary
+            ),
+            enabled = isLoginEnabled
         ) {
             Text(
                 text = stringResource(R.string.login),

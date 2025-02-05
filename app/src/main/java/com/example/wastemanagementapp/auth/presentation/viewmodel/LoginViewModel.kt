@@ -43,6 +43,9 @@ class LoginViewModel @Inject constructor(
     var email by mutableStateOf("")
         private set
 
+    var isLoginEnabled by mutableStateOf(false)
+        private set
+
     var password by mutableStateOf("")
         private set
 
@@ -113,22 +116,16 @@ class LoginViewModel @Inject constructor(
                                         message = "Login successful"
                                     )
                                 )
+                                sendEvent(NavigationEvent.Navigate(Screen.HomeScreen))
                             } else {
                                 SnackBarController.sendEvent(
                                     event = SnackBarEvent(
                                         message = "Email is not verified"
                                     )
                                 )
+                                return@launch
                             }
                         }
-
-                        sendEvent(NavigationEvent.Navigate(Screen.HomeScreen))
-                    } else {
-                        SnackBarController.sendEvent(
-                            event = SnackBarEvent(
-                                message = "Fill all the fields"
-                            )
-                        )
                     }
                 }
             }
@@ -153,5 +150,9 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun emailVerifiedOrNot(email: String): Boolean? {
         return loginRepository.emailVerifiedOrNot(email)
+    }
+
+    fun changeLoginButtonState() {
+        isLoginEnabled = email.isNotEmpty() && password.isNotEmpty()
     }
 }
