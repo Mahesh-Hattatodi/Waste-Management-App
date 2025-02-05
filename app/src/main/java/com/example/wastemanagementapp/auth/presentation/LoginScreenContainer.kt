@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -29,10 +30,15 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -75,6 +81,7 @@ fun LoginScreenContainer(
             is NavigationEvent.Navigate -> {
                 onNavigate(event)
             }
+
             NavigationEvent.PopBackStack -> Unit
         }
     }
@@ -109,6 +116,13 @@ fun LoginScreen(
     LaunchedEffect(key1 = email, key2 = password) {
         onChangeLoginButtonState()
     }
+
+    val focusRequester = remember {
+        FocusRequester()
+    }
+
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -155,7 +169,7 @@ fun LoginScreen(
                 onValueChange = {
                     onEvent(LoginEvent.OnEmailChange(it))
                 },
-                modifier = textFieldShadow,
+                modifier = textFieldShadow.focusRequester(focusRequester),
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Email,
@@ -171,6 +185,11 @@ fun LoginScreen(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(focusDirection = FocusDirection.Down)
+                    }
                 ),
                 singleLine = true,
                 shape = RoundedCornerShape(25.dp),
@@ -205,7 +224,13 @@ fun LoginScreen(
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Go
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                        onEvent(LoginEvent.OnSignInClick)
+                    }
                 ),
                 singleLine = true,
                 shape = RoundedCornerShape(25.dp),
@@ -220,7 +245,10 @@ fun LoginScreen(
         }
 
         Button(
-            onClick = { onEvent(LoginEvent.OnSignInClick) },
+            onClick = {
+                focusRequester.requestFocus()
+                onEvent(LoginEvent.OnSignInClick)
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 disabledContainerColor = MaterialTheme.colorScheme.tertiary
