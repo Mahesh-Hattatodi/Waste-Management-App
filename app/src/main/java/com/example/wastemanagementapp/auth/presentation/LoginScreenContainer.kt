@@ -44,9 +44,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wastemanagementapp.R
 import com.example.wastemanagementapp.auth.presentation.events.LoginEvent
 import com.example.wastemanagementapp.auth.presentation.viewmodel.LoginViewModel
+import com.example.wastemanagementapp.core.util.NavigationEvent
+import com.example.wastemanagementapp.core.util.ObserveAsEvents
+import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.ui.theme.Black10
 import com.example.wastemanagementapp.ui.theme.Black20
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 val textFieldShadow = Modifier
@@ -58,12 +62,22 @@ val textFieldShadow = Modifier
 
 @Composable
 fun LoginScreenContainer(
-    viewModel : LoginViewModel = hiltViewModel(),
+    viewModel: LoginViewModel = hiltViewModel(),
     context: Context,
-    scope : CoroutineScope,
-    onNavigate : () -> Unit = {}
+    scope: CoroutineScope,
+    onNavigate: (NavigationEvent.Navigate) -> Unit
 ) {
     val googleSignInClient = GoogleSignInClient(context)
+
+    ObserveAsEvents(flow = viewModel.navigationEvent) { event ->
+        when (event) {
+            is NavigationEvent.Navigate -> {
+                onNavigate(event)
+            }
+            NavigationEvent.PopBackStack -> Unit
+        }
+    }
+
 
     LoginScreen(
         onGoogleSignInClick = {
@@ -71,8 +85,6 @@ fun LoginScreenContainer(
                 val authResult = googleSignInClient.googleSignIn()
 
                 viewModel.saveGoogleUser(authResult)
-
-                onNavigate()
             }
         },
         onEvent = viewModel::onEvent,
@@ -83,10 +95,10 @@ fun LoginScreenContainer(
 
 @Composable
 fun LoginScreen(
-    onGoogleSignInClick : () -> Unit = {},
-    onEvent : (LoginEvent) -> Unit = {},
-    email : String = "",
-    password : String = ""
+    onGoogleSignInClick: () -> Unit = {},
+    onEvent: (LoginEvent) -> Unit = {},
+    email: String = "",
+    password: String = ""
 ) {
     Column(
         modifier = Modifier
@@ -171,7 +183,10 @@ fun LoginScreen(
                 },
                 modifier = textFieldShadow,
                 leadingIcon = {
-                    Icon(imageVector = Icons.Default.Lock, contentDescription = stringResource(R.string.enter_password))
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = stringResource(R.string.enter_password)
+                    )
                 },
                 label = {
                     Text(
@@ -238,10 +253,10 @@ fun LoginScreen(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-           Text(
-               text = stringResource(R.string.dont_t_have_an_account),
-               color = Black20
-           )
+            Text(
+                text = stringResource(R.string.dont_t_have_an_account),
+                color = Black20
+            )
 
             TextButton(onClick = { onEvent(LoginEvent.OnSignUpClick) }) {
                 Text(
