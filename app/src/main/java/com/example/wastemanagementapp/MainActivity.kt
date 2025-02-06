@@ -12,18 +12,24 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wastemanagementapp.auth.presentation.LoginScreenContainer
 import com.example.wastemanagementapp.auth.presentation.SignUpScreenContainer
+import com.example.wastemanagementapp.auth.presentation.viewmodel.LoginViewModel
 import com.example.wastemanagementapp.core.util.ObserveAsEvents
 import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.core.util.SnackBarController
+import com.example.wastemanagementapp.home.presentation.HomeScreenContainer
 import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -40,6 +46,9 @@ class MainActivity : ComponentActivity() {
                     SnackbarHostState()
                 }
 
+                val loginViewModel: LoginViewModel = hiltViewModel()
+                val authState by loginViewModel.authState.collectAsStateWithLifecycle()
+
                 val navController = rememberNavController()
 
                 val scope = rememberCoroutineScope()
@@ -51,13 +60,21 @@ class MainActivity : ComponentActivity() {
                         snackBarHostState.currentSnackbarData?.dismiss()
 
                         val result = snackBarHostState.showSnackbar(
-                            message = event.message,
+                            message = event.message.asString(this@MainActivity),
                             actionLabel = event.action?.name,
                             duration = SnackbarDuration.Short
                         )
 
                         if (result == SnackbarResult.ActionPerformed) {
                             event.action?.action?.invoke()
+                        }
+                    }
+                }
+
+                LaunchedEffect(authState) {
+                    if (authState != null && authState!!.isEmailVerified) {
+                        navController.navigate(Screen.HomeScreen) {
+                            popUpTo(Screen.LoginScreen) { inclusive = true }
                         }
                     }
                 }
@@ -74,7 +91,11 @@ class MainActivity : ComponentActivity() {
                     ) { innerPadding ->
                         NavHost(
                             navController = navController,
-                            startDestination = Screen.LoginScreen,
+                            startDestination = if (authState != null && authState!!.isEmailVerified) {
+                                Screen.HomeScreen
+                            } else {
+                                Screen.LoginScreen
+                            },
                             modifier = Modifier.padding(innerPadding)
                         ) {
                             composable<Screen.LoginScreen> {
@@ -88,7 +109,15 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable<Screen.SignUpScreen> {
-                                SignUpScreenContainer()
+                                SignUpScreenContainer(
+                                    onNavigate = {
+                                        navController.navigate(it.screen)
+                                    }
+                                )
+                            }
+
+                            composable<Screen.HomeScreen> {
+                                HomeScreenContainer()
                             }
                         }
                     }
