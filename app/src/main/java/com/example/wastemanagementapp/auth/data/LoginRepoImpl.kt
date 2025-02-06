@@ -25,9 +25,9 @@ class LoginRepoImpl(
     }
 
     override suspend fun saveGoogleUserProfile(userProfile: UserProfile) {
-        val userRef = firebaseFireStore.collection("user").document(userProfile.uuid)
+        val userRef = firebaseFireStore.collection("user")
 
-        userRef.set(userProfile)
+        userRef.add(userProfile)
             .addOnSuccessListener {
                 Log.i(
                     "save",
@@ -43,6 +43,7 @@ class LoginRepoImpl(
     }
 
     override suspend fun emailVerifiedOrNot(email: String): Boolean? {
+        Log.i("verify", "emailVerifiedOrNot: ${firebaseAuth.currentUser?.isEmailVerified}")
         return firebaseAuth.currentUser?.isEmailVerified
     }
 
