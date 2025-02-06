@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">Waste Mangement App</string>
+    <string name="truck_delivery_service_image">truck delivery service image</string>
+    <string name="login">Login</string>
+    <string name="please_sign_in_to_continue">Please sign in to continue</string>
+    <string name="or">Or</string>
+    <string name="sign_in_with_google">Sign in with google</string>
+    <string name="dont_t_have_an_account">Dont\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="e_mail">E-MAIL</string>
+    <string name="google_icon">Google icon</string>
+    <string name="password">PASSWORD</string>
+    <string name="create_your_account">Create your account</string>
+    <string name="name">NAME</string>
+    <string name="enter_name">Enter name</string>
+    <string name="confirm_your_password">Confirm your password</string>
+    <string name="confirm_password">CONFIRM PASSWORD</string>
+    <string name="people_recycling_image">People recycling image</string>
+    <string name="login_successful">Login successful</string>
+    <string name="login_unsuccessful">Login unsuccessful</string>
+    <string name="email_is_not_verified">Email is not verified</string>
+    <string name="the_email_cannot_be_blank">The email can\'t be blank</string>
+    <string name="that_is_not_a_valid_email">That\'s not a valid email</string>
+    <string name="password_cannot_be_empty">Password cannot be empty</string>
+    <string name="the_password_needs_to_consist_of_eight_length">Password should be atleast %d characters</string>
+    <string name="the_password_should_contain_atleast_one_letter_and_one_digit">Password should contain atleast one letter and digit</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="verification_email_is_sent">Verification email is sent</string>
 </resources>
