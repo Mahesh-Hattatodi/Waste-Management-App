@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wastemanagementapp.R
 import com.example.wastemanagementapp.auth.domain.LoginRepository
 import com.example.wastemanagementapp.auth.presentation.events.LoginEvent
 import com.example.wastemanagementapp.core.domain.UserProfile
@@ -13,14 +14,11 @@ import com.example.wastemanagementapp.core.util.NavigationEvent
 import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.core.util.SnackBarController
 import com.example.wastemanagementapp.core.util.SnackBarEvent
-import com.google.firebase.Firebase
+import com.example.wastemanagementapp.core.util.UiText
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.auth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -68,7 +66,9 @@ class LoginViewModel @Inject constructor(
                     saveUserProfile(_userProfile.value)
                     SnackBarController.sendEvent(
                         event = SnackBarEvent(
-                            message = "Login successful"
+                            message = UiText.StringResource(
+                                resId = R.string.login_successful
+                            )
                         )
                     )
                     sendEvent(NavigationEvent.Navigate(Screen.HomeScreen))
@@ -78,7 +78,9 @@ class LoginViewModel @Inject constructor(
                 viewModelScope.launch {
                     SnackBarController.sendEvent(
                         event = SnackBarEvent(
-                            message = "Login unsuccessful"
+                            message = UiText.StringResource(
+                                resId = R.string.login_unsuccessful
+                            )
                         )
                     )
                 }
@@ -106,26 +108,25 @@ class LoginViewModel @Inject constructor(
 
             LoginEvent.OnSignInClick -> {
                 viewModelScope.launch {
-                    if (email.isNotEmpty() && password.isNotEmpty()) {
-                        emailVerifiedOrNot(email).let { verified ->
-                            if (verified == true) {
-                                loginUserWithEmailAndPassword(email, password)
-
-                                SnackBarController.sendEvent(
-                                    event = SnackBarEvent(
-                                        message = "Login successful"
-                                    )
+                    loginUserWithEmailAndPassword(email, password)
+                    val verification = emailVerifiedOrNot(email)
+                    if (verification == true && authState.value != null) {
+                        SnackBarController.sendEvent(
+                            event = SnackBarEvent(
+                                message = UiText.StringResource(
+                                    resId = R.string.login_successful
                                 )
-                                sendEvent(NavigationEvent.Navigate(Screen.HomeScreen))
-                            } else {
-                                SnackBarController.sendEvent(
-                                    event = SnackBarEvent(
-                                        message = "Email is not verified"
-                                    )
+                            )
+                        )
+                        sendEvent(NavigationEvent.Navigate(Screen.HomeScreen))
+                    } else {
+                        SnackBarController.sendEvent(
+                            event = SnackBarEvent(
+                                message = UiText.StringResource(
+                                    resId = R.string.login_unsuccessful
                                 )
-                                return@launch
-                            }
-                        }
+                            )
+                        )
                     }
                 }
             }
