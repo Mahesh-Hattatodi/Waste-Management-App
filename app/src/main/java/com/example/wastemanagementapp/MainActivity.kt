@@ -15,14 +15,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.wastemanagementapp.auth.presentation.GoogleSignInClient
 import com.example.wastemanagementapp.auth.presentation.LoginScreenContainer
 import com.example.wastemanagementapp.auth.presentation.SignUpScreenContainer
 import com.example.wastemanagementapp.auth.presentation.viewmodel.LoginViewModel
@@ -32,8 +32,6 @@ import com.example.wastemanagementapp.core.util.SnackBarController
 import com.example.wastemanagementapp.home.presentation.HomeScreenContainer
 import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -46,17 +44,20 @@ class MainActivity : ComponentActivity() {
                     SnackbarHostState()
                 }
 
+                val googleSignInClient  = remember {
+                    GoogleSignInClient(this)
+                }
+
                 val loginViewModel: LoginViewModel = hiltViewModel()
                 val authState by loginViewModel.authState.collectAsStateWithLifecycle()
 
                 val navController = rememberNavController()
 
-                val scope = rememberCoroutineScope()
                 ObserveAsEvents(
                     flow = SnackBarController.events,
                     snackBarHostState
                 ) { event ->
-                    scope.launch {
+                    lifecycleScope.launch {
                         snackBarHostState.currentSnackbarData?.dismiss()
 
                         val result = snackBarHostState.showSnackbar(
@@ -100,8 +101,13 @@ class MainActivity : ComponentActivity() {
                         ) {
                             composable<Screen.LoginScreen> {
                                 LoginScreenContainer(
-                                    context = LocalContext.current,
-                                    scope = CoroutineScope(Dispatchers.Main),
+                                    onGoogleSignInClick = {
+                                        lifecycleScope.launch {
+                                            val authResult = googleSignInClient.googleSignIn()
+
+                                            loginViewModel.saveGoogleUser(authResult)
+                                        }
+                                    },
                                     onNavigate = {
                                         navController.navigate(it.screen)
                                     }

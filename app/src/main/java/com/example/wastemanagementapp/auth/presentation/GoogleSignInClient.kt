@@ -55,9 +55,13 @@ class GoogleSignInClient(
 
             Log.i("googleSignIn", "Request is created")
 
+            Log.i("googleSignIn", "Credential Manager: $credentialManager")
+            Log.i("googleSignIn", "Request: $request")
+
             // Get the credential result
             Log.i("googleSignIn", "Attempting to get credential...")
             val result = credentialManager.getCredential(context, request)
+            Log.i("login", "googleSignIn: Result credential $result")
             val credential = result.credential
             Log.i("googleSignIn", "Credential retrieved: ${result.credential}")
 
@@ -80,7 +84,8 @@ class GoogleSignInClient(
                 throw RuntimeException("Received an invalid credential type")
             }
         } catch (e: GetCredentialCancellationException) {
-            Log.i("googleSignIn", "Sign in was cancelled")
+            e.printStackTrace()
+            Log.i("googleSignIn", "Sign in was cancelled ${e.message}")
             return Result.failure(Exception("Sign in was cancelled please try again"))
         } catch (e: Exception) {
             Log.i("googleSignIn", "Error during sign in ${e.message}")

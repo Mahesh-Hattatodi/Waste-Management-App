@@ -72,11 +72,9 @@ val textFieldShadow = Modifier
 @Composable
 fun LoginScreenContainer(
     viewModel: LoginViewModel = hiltViewModel(),
-    context: Context,
-    scope: CoroutineScope,
-    onNavigate: (NavigationEvent.Navigate) -> Unit
+    onNavigate: (NavigationEvent.Navigate) -> Unit,
+    onGoogleSignInClick: () -> Unit = {}
 ) {
-    val googleSignInClient = GoogleSignInClient(context)
 
     ObserveAsEvents(flow = viewModel.navigationEvent) { event ->
         when (event) {
@@ -89,13 +87,7 @@ fun LoginScreenContainer(
     }
 
     LoginScreen(
-        onGoogleSignInClick = {
-            scope.launch {
-                val authResult = googleSignInClient.googleSignIn()
-
-                viewModel.saveGoogleUser(authResult)
-            }
-        },
+        onGoogleSignInClick = onGoogleSignInClick,
         onEvent = viewModel::onEvent,
         email = viewModel.email,
         password = viewModel.password,

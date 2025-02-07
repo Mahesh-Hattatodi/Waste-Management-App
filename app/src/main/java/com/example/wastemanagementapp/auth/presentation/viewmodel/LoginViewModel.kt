@@ -51,6 +51,7 @@ class LoginViewModel @Inject constructor(
     val navigationEvent = _navigationEvent.receiveAsFlow()
 
     fun saveGoogleUser(authResult: Result<AuthResult>) {
+        Log.i("login", "saveGoogleUser: $authResult")
         authResult.fold(
             onSuccess = { authResult ->
                 _userProfile.update { userProfile ->
