@@ -1,6 +1,7 @@
 package com.example.wastemanagementapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,6 +54,14 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
 
+                val startDestination = if (authState != null && authState!!.isEmailVerified) {
+                    Screen.HomeScreen
+                } else {
+                    Screen.LoginScreen
+                }
+
+                Log.i("authState", "onCreate: ${authState?.phoneNumber}")
+
                 ObserveAsEvents(
                     flow = SnackBarController.events,
                     snackBarHostState
@@ -92,11 +101,7 @@ class MainActivity : ComponentActivity() {
                     ) { innerPadding ->
                         NavHost(
                             navController = navController,
-                            startDestination = if (authState != null && authState!!.isEmailVerified) {
-                                Screen.HomeScreen
-                            } else {
-                                Screen.LoginScreen
-                            },
+                            startDestination = startDestination,
                             modifier = Modifier.padding(innerPadding)
                         ) {
                             composable<Screen.LoginScreen> {
@@ -108,8 +113,16 @@ class MainActivity : ComponentActivity() {
                                             loginViewModel.saveGoogleUser(authResult)
                                         }
                                     },
-                                    onNavigate = {
-                                        navController.navigate(it.screen)
+                                    onNavigate = { navEvent ->
+                                        when (navEvent.screen) {
+                                            is Screen.HomeScreen -> {
+                                                navController.navigate(navEvent.screen) {
+                                                    popUpTo(Screen.LoginScreen){ inclusive = true }
+                                                }
+                                            } else -> {
+                                            navController.navigate(navEvent.screen)
+                                        }
+                                        }
                                     }
                                 )
                             }
@@ -117,7 +130,9 @@ class MainActivity : ComponentActivity() {
                             composable<Screen.SignUpScreen> {
                                 SignUpScreenContainer(
                                     onNavigate = {
-                                        navController.navigate(it.screen)
+                                        navController.navigate(it.screen) {
+                                            popUpTo(Screen.SignUpScreen) { inclusive = true }
+                                        }
                                     }
                                 )
                             }
