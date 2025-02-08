@@ -24,7 +24,7 @@ class LoginRepoImpl(
         }
     }
 
-    override suspend fun saveGoogleUserProfile(userProfile: UserProfile) {
+    override suspend fun saveUserProfile(userProfile: UserProfile) {
         val userRef = firebaseFireStore.collection("user")
 
         userRef.add(userProfile)
@@ -49,11 +49,12 @@ class LoginRepoImpl(
 
     override suspend fun loginUserWithEmailAndPassword(email: String, password: String) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
+            .addOnSuccessListener { authResult ->
                 Log.i("login", "loginUserWithEmailAndPassword: login successful")
             }
             .addOnFailureListener {
                 Log.i("login", "loginUserWithEmailAndPassword: login unsuccessful $it")
+                throw it
             }
     }
 }

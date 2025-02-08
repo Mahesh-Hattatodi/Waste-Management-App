@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface LoginRepository {
     val authState : StateFlow<FirebaseUser?>
-    suspend fun saveGoogleUserProfile(userProfile: UserProfile)
+    suspend fun saveUserProfile(userProfile: UserProfile)
 
     suspend fun emailVerifiedOrNot(email: String) : Boolean?
 
