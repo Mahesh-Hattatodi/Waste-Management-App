@@ -28,4 +28,14 @@
     <string name="the_password_should_contain_atleast_one_letter_and_one_digit">Password should contain atleast one letter and digit</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="verification_email_is_sent">Verification email is sent</string>
+    <string name="user_image">User image</string>
+    <string name="ranking">Ranking: %1$s</string>
+    <string name="hero_image">hero image</string>
+    <string name="feature_eco_collect">EcoCollect</string>
+    <string name="complaint">Complaint</string>
+    <string name="feedback">FeedBack</string>
+    <string name="have_they_collected_the_waste_today">Have they collected the waste today?</string>
+    <string name="trash_not_picked">Trash not picked</string>
+    <string name="trash_picked">Trash picked</string>
+    <string name="trash_pickup_truck_is_not_scheduled_for_today">Trash pickup truck is not scheduled for today</string>
 </resources>
