@@ -18,4 +18,7 @@ sealed class Screen {
 
     @Serializable
     data object FeedbackScreen : Screen()
+
+    @Serializable
+    data object EcoCollectScreen : Screen()
 }
