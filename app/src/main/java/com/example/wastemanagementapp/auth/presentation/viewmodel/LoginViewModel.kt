@@ -18,6 +18,7 @@ import com.example.wastemanagementapp.core.util.UiText
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +37,7 @@ class LoginViewModel @Inject constructor(
 
     private val _userProfile = MutableStateFlow(UserProfile())
 
-    val authState : StateFlow<FirebaseUser?> get() = loginRepository.authState
+    val authState: StateFlow<FirebaseUser?> get() = loginRepository.authState
 
     var email by mutableStateOf("")
         private set
@@ -93,7 +94,7 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun saveUserProfile(userProfile: UserProfile) {
         withContext(Dispatchers.IO) {
-            loginRepository.saveGoogleUserProfile(userProfile)
+            loginRepository.saveUserProfile(userProfile)
         }
     }
 
@@ -109,17 +110,27 @@ class LoginViewModel @Inject constructor(
 
             LoginEvent.OnSignInClick -> {
                 viewModelScope.launch {
-                    loginUserWithEmailAndPassword(email, password)
-                    val verification = emailVerifiedOrNot(email)
-                    if (verification == true && authState.value != null) {
-                        SnackBarController.sendEvent(
-                            event = SnackBarEvent(
-                                message = UiText.StringResource(
-                                    resId = R.string.login_successful
+                    val isSuccess = loginUserWithEmailAndPassword(email, password)
+                    if (isSuccess) {
+                        val verification = emailVerifiedOrNot(email)
+                        if (verification == true && authState.value != null) {
+                            SnackBarController.sendEvent(
+                                event = SnackBarEvent(
+                                    message = UiText.StringResource(
+                                        resId = R.string.login_successful
+                                    )
                                 )
                             )
-                        )
-                        sendEvent(NavigationEvent.Navigate(Screen.HomeScreen))
+                            sendEvent(NavigationEvent.Navigate(Screen.HomeScreen))
+                        } else {
+                            SnackBarController.sendEvent(
+                                event = SnackBarEvent(
+                                    message = UiText.StringResource(
+                                        resId = R.string.email_is_not_verified
+                                    )
+                                )
+                            )
+                        }
                     } else {
                         SnackBarController.sendEvent(
                             event = SnackBarEvent(
@@ -144,9 +155,16 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun loginUserWithEmailAndPassword(email: String, password: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+    private suspend fun loginUserWithEmailAndPassword(email: String, password: String): Boolean {
+        return try {
             loginRepository.loginUserWithEmailAndPassword(email, password)
+            true
+        } catch (e: CancellationException) {
+            Log.e("login", "loginUserWithEmailAndPassword: coroutine cancelled ${e.message}")
+            false
+        } catch (e: Exception) {
+            Log.e("login", "loginUserWithEmailAndPassword: ${e.message}")
+            false
         }
     }
 
