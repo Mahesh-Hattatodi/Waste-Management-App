@@ -60,7 +60,7 @@ fun AppBottomBar(
                     topEnd = 20.dp,
                     topStart = 20.dp
                 )
-            ),
+            )
     )
 }
 
