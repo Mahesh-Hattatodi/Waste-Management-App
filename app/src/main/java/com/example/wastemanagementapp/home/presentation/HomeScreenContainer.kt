@@ -47,9 +47,17 @@ fun HomeScreenContainer(
         )
     )
 
+    val demoUserInfo = UserInfo(
+        ranking = "07",
+        name = "Mahesh",
+        email = "maheshhattatodi@gmail.com",
+        photoUrl = "https://plus.unsplash.com/premium_photo-1683121366070-5ceb7e007a97?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
+    )
+
     HomeScreen(
         featureSelectionList = featureSelectionList,
-        onEvent = viewModel::onEvent
+        onEvent = viewModel::onEvent,
+        userInfo = demoUserInfo
     )
 }
 
@@ -68,7 +76,7 @@ fun HomeScreen(
     ) {
         UserInfoComponent(
             modifier = Modifier
-                .fillMaxHeight(0.2f),
+                .fillMaxHeight(0.3f),
             userInfo = userInfo
         )
 
