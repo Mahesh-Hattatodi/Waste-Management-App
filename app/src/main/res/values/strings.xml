@@ -38,4 +38,5 @@
     <string name="trash_not_picked">Trash not picked</string>
     <string name="trash_picked">Trash picked</string>
     <string name="trash_pickup_truck_is_not_scheduled_for_today">Trash pickup truck is not scheduled for today</string>
+    <string name="home_icon">Home icon</string>
 </resources>
