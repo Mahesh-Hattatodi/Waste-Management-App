@@ -21,4 +21,10 @@ sealed class Screen {
 
     @Serializable
     data object EcoCollectScreen : Screen()
+
+    @Serializable
+    data object TrackScreen : Screen()
+
+    @Serializable
+    data object ScheduleScreen : Screen()
 }
