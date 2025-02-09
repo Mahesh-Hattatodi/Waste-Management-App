@@ -1,10 +1,12 @@
 package com.example.wastemanagementapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -12,10 +14,13 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,6 +50,12 @@ class MainActivity : ComponentActivity() {
                 val snackBarHostState = remember {
                     SnackbarHostState()
                 }
+
+                var isBottomBarActive by remember {
+                    mutableStateOf(false)
+                }
+
+                Log.i("ui", "onCreate: $isBottomBarActive")
 
                 val loginViewModel: LoginViewModel = hiltViewModel()
                 val authState by loginViewModel.authState.collectAsStateWithLifecycle()
@@ -87,7 +98,20 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         snackbarHost = {
                             SnackbarHost(hostState = snackBarHostState)
-                        }
+                        },
+                        bottomBar = {
+                            if (isBottomBarActive) {
+                                AppBottomBar(
+                                    onClick = { navEvent ->
+                                        navController.navigate(navEvent.screen)
+                                    }
+                                )
+                            }
+                        },
+                        floatingActionButton = {
+
+                        },
+                        floatingActionButtonPosition = FabPosition.Center
                     ) { innerPadding ->
                         NavHost(
                             navController = navController,
@@ -99,6 +123,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.padding(innerPadding)
                         ) {
                             composable<Screen.LoginScreen> {
+                                isBottomBarActive = false
                                 LoginScreenContainer(
                                     context = LocalContext.current,
                                     scope = CoroutineScope(Dispatchers.Main),
@@ -109,6 +134,7 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable<Screen.SignUpScreen> {
+                                isBottomBarActive = false
                                 SignUpScreenContainer(
                                     onNavigate = {
                                         navController.navigate(it.screen)
@@ -117,7 +143,18 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable<Screen.HomeScreen> {
+                                isBottomBarActive = true
                                 HomeScreenContainer()
+                            }
+
+                            composable<Screen.TrackScreen> {
+                                isBottomBarActive = true
+                                Text("Hello")
+                            }
+
+                            composable<Screen.ScheduleScreen> {
+                                isBottomBarActive = true
+                                Text("Jello")
                             }
                         }
                     }
