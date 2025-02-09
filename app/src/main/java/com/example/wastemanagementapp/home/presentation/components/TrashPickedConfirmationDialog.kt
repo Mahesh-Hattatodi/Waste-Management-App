@@ -49,7 +49,7 @@ fun TrashPickedConfirmationDialog(
                 spotColor = Black10,
                 shape = RoundedCornerShape(22.dp)
             )
-            .padding(start = 20.dp, end = 20.dp, bottom = 14.dp)
+            .padding(start = 20.dp, end = 20.dp)
     ) {
         Column(
             modifier = Modifier
