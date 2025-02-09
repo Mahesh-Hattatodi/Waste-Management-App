@@ -6,14 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,16 +26,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.wastemanagementapp.R
-import com.example.wastemanagementapp.core.util.NavigationEvent
 import com.example.wastemanagementapp.home.domain.models.UserInfo
 import com.example.wastemanagementapp.home.presentation.HomeEvent
 import com.example.wastemanagementapp.ui.theme.DarkGreen40
 
 @Composable
 fun UserInfoComponent(
+    modifier: Modifier = Modifier,
     userInfo: UserInfo,
-    onUserInfoClick: (HomeEvent) -> Unit = {},
-    modifier: Modifier = Modifier
+    onUserInfoClick: (HomeEvent) -> Unit = {}
 ) {
     Card(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
@@ -47,7 +44,7 @@ fun UserInfoComponent(
         ),
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 12.dp)
+            .padding(start = 20.dp, end = 20.dp, top = 30.dp, bottom = 24.dp)
             .clickable { onUserInfoClick(HomeEvent.OnProfileClick) }
     ) {
         Row(
@@ -55,7 +52,7 @@ fun UserInfoComponent(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 5.dp,end = 12.dp, top = 10.dp, bottom = 10.dp)
+                .padding(start = 10.dp,end = 10.dp, top = 10.dp, bottom = 10.dp)
         ) {
             AsyncImage(
                 model = userInfo.photoUrl,

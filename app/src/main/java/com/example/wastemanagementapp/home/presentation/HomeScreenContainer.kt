@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wastemanagementapp.R
-import com.example.wastemanagementapp.core.util.NavigationEvent
 import com.example.wastemanagementapp.home.domain.models.UserInfo
 import com.example.wastemanagementapp.home.presentation.components.FeatureSelectRowComponent
 import com.example.wastemanagementapp.home.presentation.components.TrashPickedConfirmationDialog
@@ -68,9 +67,9 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         UserInfoComponent(
-            userInfo = userInfo,
             modifier = Modifier
-                .fillMaxHeight(0.2f)
+                .fillMaxHeight(0.2f),
+            userInfo = userInfo
         )
 
         Image(
@@ -80,7 +79,7 @@ fun HomeScreen(
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.3f),
+                .fillMaxHeight(0.4f),
             contentScale = ContentScale.FillBounds
         )
 
