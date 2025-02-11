@@ -27,4 +27,10 @@ sealed class Screen {
 
     @Serializable
     data object ScheduleScreen : Screen()
+
+    @Serializable
+    data object FaqScreen : Screen()
+
+    @Serializable
+    data object SupportScreen : Screen()
 }
