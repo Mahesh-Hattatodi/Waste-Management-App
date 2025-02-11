@@ -17,6 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wastemanagementapp.R
+import com.example.wastemanagementapp.core.util.NavigationEvent
+import com.example.wastemanagementapp.core.util.ObserveAsEvents
 import com.example.wastemanagementapp.home.domain.models.UserInfo
 import com.example.wastemanagementapp.home.presentation.components.FeatureSelectRowComponent
 import com.example.wastemanagementapp.home.presentation.components.TrashPickedConfirmationDialog
@@ -26,7 +28,8 @@ import com.example.wastemanagementapp.home.presentation.util.FeatureId
 
 @Composable
 fun HomeScreenContainer(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onNavigate: (NavigationEvent.Navigate) -> Unit = {}
 ) {
     val featureSelectionList = listOf(
         FeatureSelection(
@@ -54,6 +57,16 @@ fun HomeScreenContainer(
         photoUrl = "https://plus.unsplash.com/premium_photo-1683121366070-5ceb7e007a97?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
     )
 
+    ObserveAsEvents(flow = viewModel.navigationEvent) { event ->
+        when (event) {
+            is NavigationEvent.Navigate -> {
+                onNavigate(event)
+            }
+
+            NavigationEvent.PopBackStack -> Unit
+        }
+    }
+
     HomeScreen(
         featureSelectionList = featureSelectionList,
         onEvent = viewModel::onEvent,
@@ -76,7 +89,7 @@ fun HomeScreen(
     ) {
         UserInfoComponent(
             modifier = Modifier
-                .fillMaxHeight(0.3f),
+                .fillMaxHeight(0.25f),
             userInfo = userInfo
         )
 
@@ -87,7 +100,7 @@ fun HomeScreen(
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.4f),
+                .fillMaxHeight(0.3f),
             contentScale = ContentScale.FillBounds
         )
 
