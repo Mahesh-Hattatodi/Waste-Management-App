@@ -39,4 +39,26 @@
     <string name="trash_picked">Trash picked</string>
     <string name="trash_pickup_truck_is_not_scheduled_for_today">Trash pickup truck is not scheduled for today</string>
     <string name="home_icon">Home icon</string>
+    <string name="complaint_enter_name">Enter name</string>
+    <string name="enter_postal_address">Enter Postal Address</string>
+    <string name="enter_complaint_details">Enter Complaint Details</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="selected_image">Selected Image</string>
+    <string name="complaint_submitted">Complaint Submitted</string>
+    <string name="raise_a_complaint">Raise a Complaint</string>
+    <string name="submit_complaint">Submit Complaint</string>
+    <string name="title_feedback">Feedback</string>
+    <string name="share_your_feedback">Share Your Feedback</string>
+    <string name="please_select_a_topic_below_and_let_us_know_about_your_concern">Please select a topic below and let us know about your concern</string>
+    <string name="submit">Submit</string>
+    <string name="feedback_submitted">Feedback Submitted</string>
+    <string name="select_topic">Select topic</string>
+    <string name="feedback_image">Feedback Image</string>
+
+    <string-array name="list_of_complaint_category">
+        <item name="garbage_collection">Garbage Collection</item>
+        <item name="recycling_issues">Recycling Issues</item>
+        <item name="illegal_dumping">Illegal Dumping</item>
+        <item name="other">Other</item>
+    </string-array>
 </resources>
