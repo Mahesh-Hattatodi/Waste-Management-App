@@ -44,8 +44,8 @@ import com.example.wastemanagementapp.complaint.presentation.screens.ComplaintSc
 import com.example.wastemanagementapp.core.util.ObserveAsEvents
 import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.core.util.SnackBarController
+import com.example.wastemanagementapp.faq.presentation.FAQContainer
 import com.example.wastemanagementapp.feedback.presentation.FeedbackContainer
-import com.example.wastemanagementapp.feedback.presentation.FeedbackScreen
 import com.example.wastemanagementapp.home.presentation.HomeScreenContainer
 import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -196,6 +196,16 @@ class MainActivity : ComponentActivity() {
                             composable<Screen.FeedbackScreen> {
                                 isBottomBarActive = false
                                 FeedbackContainer()
+                            }
+
+                            composable<Screen.FaqScreen> {
+                                isBottomBarActive = false
+                                FAQContainer()
+                            }
+
+                            composable<Screen.SupportScreen> {
+                                isBottomBarActive = false
+                                FAQContainer()
                             }
                         }
                     }
