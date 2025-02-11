@@ -10,7 +10,7 @@ import com.example.wastemanagementapp.auth.domain.SignUpRepository
 import com.example.wastemanagementapp.auth.domain.use_cases.ValidateConfirmPassword
 import com.example.wastemanagementapp.auth.domain.use_cases.ValidateEmail
 import com.example.wastemanagementapp.auth.domain.use_cases.ValidatePassword
-import com.example.wastemanagementapp.auth.presentation.RegistrationFormState
+import com.example.wastemanagementapp.auth.presentation.state.RegistrationFormState
 import com.example.wastemanagementapp.auth.presentation.events.SignUpEvent
 import com.example.wastemanagementapp.core.domain.UserProfile
 import com.example.wastemanagementapp.core.util.NavigationEvent

@@ -1,4 +1,4 @@
-package com.example.wastemanagementapp.auth.presentation
+package com.example.wastemanagementapp.auth.presentation.screens
 
 import android.content.Context
 import androidx.compose.foundation.Image
@@ -23,7 +23,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -44,22 +43,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wastemanagementapp.R
+import com.example.wastemanagementapp.auth.presentation.GoogleSignInClient
 import com.example.wastemanagementapp.auth.presentation.events.LoginEvent
 import com.example.wastemanagementapp.auth.presentation.viewmodel.LoginViewModel
 import com.example.wastemanagementapp.core.util.NavigationEvent
 import com.example.wastemanagementapp.core.util.ObserveAsEvents
-import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.ui.theme.Black10
 import com.example.wastemanagementapp.ui.theme.Black20
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 val textFieldShadow = Modifier

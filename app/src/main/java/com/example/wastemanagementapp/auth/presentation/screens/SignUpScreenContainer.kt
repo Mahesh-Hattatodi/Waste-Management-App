@@ -1,4 +1,4 @@
-package com.example.wastemanagementapp.auth.presentation
+package com.example.wastemanagementapp.auth.presentation.screens
 
 import android.content.Context
 import androidx.compose.foundation.Image

@@ -1,4 +1,4 @@
-package com.example.wastemanagementapp.auth.presentation
+package com.example.wastemanagementapp.auth.presentation.state
 
 import com.example.wastemanagementapp.core.util.UiText
 
