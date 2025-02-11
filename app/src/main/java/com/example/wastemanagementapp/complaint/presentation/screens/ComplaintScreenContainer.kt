@@ -112,7 +112,7 @@ fun ComplaintScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .menuAnchor(),
-                    label = { Text("Select topic") },
+                    label = { Text(stringResource(R.string.select_topic), color = Color.Black) },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = state.expanded)
                     },
@@ -131,7 +131,7 @@ fun ComplaintScreen(
                 ) {
                     complaintCategories.forEach { topic ->
                         DropdownMenuItem(
-                            text = { Text(topic) },
+                            text = { Text(topic, color = Color.Black) },
                             onClick = {
                                 onEvent(ComplaintEvent.OnSelectCategory(topic))
                             }
@@ -148,7 +148,7 @@ fun ComplaintScreen(
                 onValueChange = {
                     onEvent(ComplaintEvent.OnNameChange(it))
                 },
-                label = { Text(stringResource(R.string.complaint_enter_name)) },
+                label = { Text(stringResource(R.string.complaint_enter_name), color = Color.Black) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF386641),
@@ -167,7 +167,7 @@ fun ComplaintScreen(
                 onValueChange = {
                     onEvent(ComplaintEvent.OnAddressChange(it))
                 },
-                label = { Text(stringResource(R.string.enter_postal_address)) },
+                label = { Text(stringResource(R.string.enter_postal_address), color = Color.Black) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF386641),
@@ -186,7 +186,7 @@ fun ComplaintScreen(
                 onValueChange = {
                     onEvent(ComplaintEvent.OnComplaintDetailsChange(it))
                 },
-                label = { Text(stringResource(R.string.enter_complaint_details)) },
+                label = { Text(stringResource(R.string.enter_complaint_details), color = Color.Black) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp),
