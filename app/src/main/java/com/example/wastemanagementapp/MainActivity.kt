@@ -37,12 +37,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.wastemanagementapp.auth.presentation.LoginScreenContainer
-import com.example.wastemanagementapp.auth.presentation.SignUpScreenContainer
+import com.example.wastemanagementapp.auth.presentation.screens.LoginScreenContainer
+import com.example.wastemanagementapp.auth.presentation.screens.SignUpScreenContainer
 import com.example.wastemanagementapp.auth.presentation.viewmodel.LoginViewModel
+import com.example.wastemanagementapp.complaint.presentation.screens.ComplaintScreenContainer
 import com.example.wastemanagementapp.core.util.ObserveAsEvents
 import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.core.util.SnackBarController
+import com.example.wastemanagementapp.feedback.presentation.FeedbackContainer
+import com.example.wastemanagementapp.feedback.presentation.FeedbackScreen
 import com.example.wastemanagementapp.home.presentation.HomeScreenContainer
 import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -168,7 +171,11 @@ class MainActivity : ComponentActivity() {
 
                             composable<Screen.HomeScreen> {
                                 isBottomBarActive = true
-                                HomeScreenContainer()
+                                HomeScreenContainer(
+                                    onNavigate = { event ->
+                                        navController.navigate(event.screen)
+                                    }
+                                )
                             }
 
                             composable<Screen.TrackScreen> {
@@ -179,6 +186,16 @@ class MainActivity : ComponentActivity() {
                             composable<Screen.ScheduleScreen> {
                                 isBottomBarActive = true
                                 Text("Jello")
+                            }
+
+                            composable<Screen.ComplaintScreen> {
+                                isBottomBarActive = false
+                                ComplaintScreenContainer()
+                            }
+
+                            composable<Screen.FeedbackScreen> {
+                                isBottomBarActive = false
+                                FeedbackContainer()
                             }
                         }
                     }
