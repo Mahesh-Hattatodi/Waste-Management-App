@@ -54,11 +54,20 @@
     <string name="feedback_submitted">Feedback Submitted</string>
     <string name="select_topic">Select topic</string>
     <string name="feedback_image">Feedback Image</string>
+    <string name="enter_feedback">Enter feedback</string>
 
     <string-array name="list_of_complaint_category">
         <item name="garbage_collection">Garbage Collection</item>
         <item name="recycling_issues">Recycling Issues</item>
         <item name="illegal_dumping">Illegal Dumping</item>
+        <item name="other">Other</item>
+    </string-array>
+
+    <string-array name="list_of_feedback_topic">
+        <item name="app_performance">App Performance</item>
+        <item name="user_interface">User Interface</item>
+        <item name="bug_report">Bug Report</item>
+        <item name="feature_request">Feature Request</item>
         <item name="other">Other</item>
     </string-array>
 </resources>
