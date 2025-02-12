@@ -11,6 +11,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,29 +39,34 @@ fun FAQScreen(
         item {
             Spacer(modifier = Modifier.height(50.dp))
 
-            Text(text = "FAQs", fontSize = 32.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = stringResource(R.string.faq),
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
 
             Image(
                 painter = painterResource(id = R.drawable.truck_delivery_service),
-                contentDescription = "FAQ Image",
+                contentDescription = stringResource(R.string.faq_image),
                 modifier = Modifier
                     .size(180.dp)
                     .padding(vertical = 10.dp)
             )
 
             Text(
-                text = "How Can We Help?",
+                text = stringResource(R.string.how_can_we_help),
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
             Spacer(modifier = Modifier.height(20.dp))
             Text(
-                text = "Welcome to our App Support. Ask anything. Our Support Community can help you find answers to all your queries.",
+                text = stringResource(R.string.welcome_to_our_app_support_ask_anything_our_support_community_can_help_you_find_answers_to_all_your_queries),
                 fontSize = 14.sp,
                 fontStyle = FontStyle.Italic,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Gray
+                color = Color.DarkGray
             )
 
             Spacer(modifier = Modifier.height(40.dp))
@@ -70,16 +76,16 @@ fun FAQScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                FAQButton(title = "App", icon = R.drawable.baseline_app_settings)
-                FAQButton(title = "General", icon = R.drawable.baseline_general)
+                FAQButton(title = stringResource(R.string.app), icon = R.drawable.baseline_app_settings)
+                FAQButton(title = stringResource(R.string.general), icon = R.drawable.baseline_general)
             }
             Spacer(modifier = Modifier.height(40.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                FAQButton(title = "Usage", icon = R.drawable.baseline_data_usage)
-                FAQButton(title = "Troubleshooting", icon = R.drawable.baseline_troubleshoot)
+                FAQButton(title = stringResource(R.string.usage), icon = R.drawable.baseline_data_usage)
+                FAQButton(title = stringResource(R.string.troubleshooting), icon = R.drawable.baseline_troubleshoot)
             }
         }
     }
@@ -123,7 +129,8 @@ fun FAQButton(title: String, icon: Int) {
             Text(
                 text = title,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                color = Color.Black
             )
         }
     }
