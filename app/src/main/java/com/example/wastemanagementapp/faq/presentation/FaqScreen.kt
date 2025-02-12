@@ -3,6 +3,7 @@ package com.example.wastemanagementapp.faq.presentation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -13,10 +14,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
 import com.example.wastemanagementapp.R
 
 @Composable
@@ -30,56 +29,58 @@ fun FAQContainer(modifier: Modifier = Modifier) {
 fun FAQScreen(
     modifier: Modifier = Modifier
 ) {
-    Column(
+    LazyColumn (
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(50.dp))
+        item {
+            Spacer(modifier = Modifier.height(50.dp))
 
-        Text(text = "FAQs", fontSize = 32.sp, fontWeight = FontWeight.Bold)
+            Text(text = "FAQs", fontSize = 32.sp, fontWeight = FontWeight.Bold)
 
-        Image(
-            painter = painterResource(id = R.drawable.truck_delivery_service),
-            contentDescription = "FAQ Image",
-            modifier = Modifier
-                .size(180.dp)
-                .padding(vertical = 10.dp)
-        )
+            Image(
+                painter = painterResource(id = R.drawable.truck_delivery_service),
+                contentDescription = "FAQ Image",
+                modifier = Modifier
+                    .size(180.dp)
+                    .padding(vertical = 10.dp)
+            )
 
-        Text(
-            text = "How Can We Help?",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = "Welcome to our App Support. Ask anything. Our Support Community can help you find answers to all your queries.",
-            fontSize = 14.sp,
-            fontStyle = FontStyle.Italic,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.Gray
-        )
+            Text(
+                text = "How Can We Help?",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = "Welcome to our App Support. Ask anything. Our Support Community can help you find answers to all your queries.",
+                fontSize = 14.sp,
+                fontStyle = FontStyle.Italic,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                color = Color.Gray
+            )
 
-        Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
-        // FAQ Buttons
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            FAQButton(title = "App", icon = R.drawable.baseline_app_settings)
-            FAQButton(title = "General", icon = R.drawable.baseline_general)
-        }
-        Spacer(modifier = Modifier.height(40.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            FAQButton(title = "Usage", icon = R.drawable.baseline_data_usage)
-            FAQButton(title = "Troubleshooting", icon = R.drawable.baseline_troubleshoot)
+            // FAQ Buttons
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                FAQButton(title = "App", icon = R.drawable.baseline_app_settings)
+                FAQButton(title = "General", icon = R.drawable.baseline_general)
+            }
+            Spacer(modifier = Modifier.height(40.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                FAQButton(title = "Usage", icon = R.drawable.baseline_data_usage)
+                FAQButton(title = "Troubleshooting", icon = R.drawable.baseline_troubleshoot)
+            }
         }
     }
 }
