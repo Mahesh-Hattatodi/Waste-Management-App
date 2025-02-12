@@ -47,6 +47,7 @@ import com.example.wastemanagementapp.core.util.SnackBarController
 import com.example.wastemanagementapp.faq.presentation.FAQContainer
 import com.example.wastemanagementapp.feedback.presentation.FeedbackContainer
 import com.example.wastemanagementapp.home.presentation.HomeScreenContainer
+import com.example.wastemanagementapp.support.presentation.SupportContainer
 import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -205,7 +206,11 @@ class MainActivity : ComponentActivity() {
 
                             composable<Screen.SupportScreen> {
                                 isBottomBarActive = true
-                                FAQContainer()
+                                SupportContainer(
+                                    onNavigate = { event ->
+                                        navController.navigate(event.screen)
+                                    }
+                                )
                             }
                         }
                     }
