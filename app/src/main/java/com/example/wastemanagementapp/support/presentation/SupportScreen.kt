@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -51,71 +52,73 @@ fun SupportScreen(
     modifier: Modifier = Modifier,
     onEvent: (SupportScreenEvent) -> Unit = {}
 ) {
-    Column(
+    LazyColumn (
         modifier = modifier
             .fillMaxSize()
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Header Image
-        Image(
-            painter = painterResource(id = R.drawable.banner_intro),
-            contentDescription = stringResource(R.string.support_image),
-            modifier = Modifier
-                .size(300.dp)
-                .padding(bottom = 5.dp)
-        )
-
-        Text(text = stringResource(R.string.support), fontSize = 28.sp, fontWeight = FontWeight.Bold)
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        // Call Us & Mail Us Buttons
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            SupportOption(
-                icon = R.drawable.baseline_local_phone,
-                title = stringResource(R.string.call_us),
-                subtitle = stringResource(R.string.talk_to_our_executive),
-                onClick = {
-                    onEvent(SupportScreenEvent.OnCallUsRequest)
-                }
+        item {
+            // Header Image
+            Image(
+                painter = painterResource(id = R.drawable.banner_intro),
+                contentDescription = stringResource(R.string.support_image),
+                modifier = Modifier
+                    .size(300.dp)
+                    .padding(bottom = 5.dp)
             )
-            SupportOption(
-                icon = R.drawable.baseline_email,
-                title = stringResource(R.string.mail_us),
-                subtitle = stringResource(R.string.mail_to_our_executive),
-                onClick = {
-                    onEvent(SupportScreenEvent.OnEmailUsRequest)
-                }
+
+            Text(text = stringResource(R.string.support), fontSize = 28.sp, fontWeight = FontWeight.Bold)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Call Us & Mail Us Buttons
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                SupportOption(
+                    icon = R.drawable.baseline_local_phone,
+                    title = stringResource(R.string.call_us),
+                    subtitle = stringResource(R.string.talk_to_our_executive),
+                    onClick = {
+                        onEvent(SupportScreenEvent.OnCallUsRequest)
+                    }
+                )
+                SupportOption(
+                    icon = R.drawable.baseline_email,
+                    title = stringResource(R.string.mail_us),
+                    subtitle = stringResource(R.string.mail_to_our_executive),
+                    onClick = {
+                        onEvent(SupportScreenEvent.OnEmailUsRequest)
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // FAQs & Feedback Buttons
+            SupportButton(
+                icon = R.drawable.baseline_question_mark,
+                title = stringResource(R.string.faqs),
+                subtitle = stringResource(R.string.discover_app_information),
+                onClick = { onEvent(SupportScreenEvent.OnFaqClick) } //faq screen
+            )
+
+            SupportButton(
+                icon = R.drawable.baseline_comment,
+                title = stringResource(R.string.feedback),
+                subtitle = stringResource(R.string.tell_us_what_you_think_of_our_app),
+                onClick = { onEvent(SupportScreenEvent.OnFeedbackClick) }
+            )
+
+            SupportButton(
+                icon = R.drawable.baseline_activity,
+                title = stringResource(R.string.raise_a_concern),
+                subtitle = stringResource(R.string.raise_a_complaint_help_keep_our_community_clean),
+                onClick = { onEvent(SupportScreenEvent.OnComplaintClick) }
             )
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // FAQs & Feedback Buttons
-        SupportButton(
-            icon = R.drawable.baseline_question_mark,
-            title = stringResource(R.string.faqs),
-            subtitle = stringResource(R.string.discover_app_information),
-            onClick = { onEvent(SupportScreenEvent.OnFaqClick) } //faq screen
-        )
-
-        SupportButton(
-            icon = R.drawable.baseline_comment,
-            title = stringResource(R.string.feedback),
-            subtitle = stringResource(R.string.tell_us_what_you_think_of_our_app),
-            onClick = { onEvent(SupportScreenEvent.OnFeedbackClick) }
-        )
-
-        SupportButton(
-            icon = R.drawable.baseline_activity,
-            title = stringResource(R.string.raise_a_concern),
-            subtitle = stringResource(R.string.raise_a_complaint_help_keep_our_community_clean),
-            onClick = { onEvent(SupportScreenEvent.OnComplaintClick) }
-        )
     }
 }
 
