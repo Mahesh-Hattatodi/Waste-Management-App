@@ -33,4 +33,7 @@ sealed class Screen {
 
     @Serializable
     data object SupportScreen : Screen()
+
+    @Serializable
+    data object ProfileScreen : Screen()
 }
