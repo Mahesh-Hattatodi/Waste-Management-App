@@ -55,6 +55,21 @@
     <string name="select_topic">Select topic</string>
     <string name="feedback_image">Feedback Image</string>
     <string name="enter_feedback">Enter feedback</string>
+    <string name="support_image">Support Image</string>
+    <string name="support">Support</string>
+    <string name="call_us">Call Us</string>
+    <string name="talk_to_our_executive">Talk to our executive</string>
+    <string name="mail_us">Mail Us</string>
+    <string name="mail_to_our_executive">Mail to our executive</string>
+    <string name="faqs">FAQs</string>
+    <string name="discover_app_information">Discover App Information</string>
+    <string name="tell_us_what_you_think_of_our_app">Tell us what you think of our App</string>
+    <string name="raise_a_concern">Raise a Concern</string>
+    <string name="raise_a_complaint_help_keep_our_community_clean"><![CDATA[Raise a Complaint & Help Keep Our Community Clean!]]></string>
+    <string name="choose_email_app">Choose Email App</string>
+    <string name="tracking">Tracking</string>
+    <string name="calender">Calender</string>
+    <string name="faq">FAQ</string>
 
     <string-array name="list_of_complaint_category">
         <item name="garbage_collection">Garbage Collection</item>
