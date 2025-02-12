@@ -129,8 +129,8 @@ class MainActivity : ComponentActivity() {
                                     contentColor = Color.White,
                                     shape = CircleShape,
                                     modifier = Modifier
-                                        .offset(y = 40.dp)
-                                        .size(52.dp)
+                                        .offset(y = 60.dp)
+                                        .size(72.dp)
                                 ) {
                                     Icon(
                                         painter = painterResource(R.drawable.home),
@@ -180,12 +180,12 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable<Screen.TrackScreen> {
-                                isBottomBarActive = true
+                                isBottomBarActive = false
                                 Text("Hello")
                             }
 
                             composable<Screen.ScheduleScreen> {
-                                isBottomBarActive = true
+                                isBottomBarActive = false
                                 Text("Jello")
                             }
 
@@ -200,7 +200,7 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable<Screen.FaqScreen> {
-                                isBottomBarActive = true
+                                isBottomBarActive = false
                                 FAQContainer()
                             }
 
@@ -211,6 +211,11 @@ class MainActivity : ComponentActivity() {
                                         navController.navigate(event.screen)
                                     }
                                 )
+                            }
+
+                            composable<Screen.ProfileScreen> {
+                                isBottomBarActive = true
+                                Text(text = "Profile screen", color = Color.Red)
                             }
                         }
                     }
