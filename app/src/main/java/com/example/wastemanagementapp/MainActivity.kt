@@ -128,8 +128,8 @@ class MainActivity : ComponentActivity() {
                                     contentColor = Color.White,
                                     shape = CircleShape,
                                     modifier = Modifier
-                                        .offset(y = 80.dp)
-                                        .size(72.dp)
+                                        .offset(y = 40.dp)
+                                        .size(52.dp)
                                 ) {
                                     Icon(
                                         painter = painterResource(R.drawable.home),
@@ -199,12 +199,12 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable<Screen.FaqScreen> {
-                                isBottomBarActive = false
+                                isBottomBarActive = true
                                 FAQContainer()
                             }
 
                             composable<Screen.SupportScreen> {
-                                isBottomBarActive = false
+                                isBottomBarActive = true
                                 FAQContainer()
                             }
                         }
