@@ -68,7 +68,12 @@ fun SupportScreen(
                     .padding(bottom = 5.dp)
             )
 
-            Text(text = stringResource(R.string.support), fontSize = 28.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = stringResource(R.string.support),
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -191,8 +196,18 @@ fun SupportButton(icon: Int, title: String, subtitle: String, onClick: () -> Uni
             }
             Spacer(modifier = Modifier.width(20.dp))
             Column {
-                Text(text = title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                Text(text = subtitle, fontStyle = FontStyle.Italic, fontSize = 10.sp, color = Color.Gray)
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    color = Color.Black
+                )
+                Text(
+                    text = subtitle,
+                    fontStyle = FontStyle.Italic,
+                    fontSize = 10.sp,
+                    color = Color.DarkGray
+                )
             }
         }
     }
