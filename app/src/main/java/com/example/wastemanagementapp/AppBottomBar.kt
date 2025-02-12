@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,15 +31,25 @@ fun AppBottomBar(
 
     val bottomNavigationItems = listOf(
         BottomNavigationItem(
+            iconSelected = painterResource(R.drawable.faq_icon),
+            name = stringResource(R.string.faq),
+            route = Screen.FaqScreen
+        ),
+        BottomNavigationItem(
             iconSelected = painterResource(R.drawable.track_icon),
-            name = "Tracking",
+            name = stringResource(R.string.tracking),
             route = Screen.TrackScreen
         ),
         BottomNavigationItem(
             iconSelected = painterResource(R.drawable.calendar),
-            name = "Calender",
+            name = stringResource(R.string.calender),
             route = Screen.ScheduleScreen
-        )
+        ),
+        BottomNavigationItem(
+            iconSelected = painterResource(R.drawable.support_icon),
+            name = stringResource(R.string.support),
+            route = Screen.SupportScreen
+        ),
     )
 
     BottomAppBar(
