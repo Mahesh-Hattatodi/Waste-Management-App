@@ -17,6 +17,7 @@ class HomeViewModel @Inject constructor(
 
     private val _navigationEvent = Channel<NavigationEvent>()
     val navigationEvent = _navigationEvent.receiveAsFlow()
+
     fun onEvent(event : HomeEvent) {
         when (event) {
             HomeEvent.OnComplaintClick -> {
