@@ -6,9 +6,9 @@ sealed interface HomeEvent {
 
     data object OnEcoCollectClick : HomeEvent
 
-    data object OnFeedbackClick : HomeEvent
+    data object OnTrackingClick : HomeEvent
 
-    data object OnComplaintClick : HomeEvent
+    data object OnScheduleClick : HomeEvent
 
     data object OnPickedClick : HomeEvent
 

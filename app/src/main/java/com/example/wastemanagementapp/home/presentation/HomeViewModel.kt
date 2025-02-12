@@ -20,14 +20,14 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event : HomeEvent) {
         when (event) {
-            HomeEvent.OnComplaintClick -> {
-                sendEvent(NavigationEvent.Navigate(Screen.ComplaintScreen))
+            HomeEvent.OnScheduleClick -> {
+                sendEvent(NavigationEvent.Navigate(Screen.ScheduleScreen))
             }
             HomeEvent.OnEcoCollectClick -> {
                 sendEvent(NavigationEvent.Navigate(Screen.EcoCollectScreen))
             }
-            HomeEvent.OnFeedbackClick -> {
-                sendEvent(NavigationEvent.Navigate(Screen.FeedbackScreen))
+            HomeEvent.OnTrackingClick -> {
+                sendEvent(NavigationEvent.Navigate(Screen.TrackScreen))
             }
             HomeEvent.OnNotPickedClick -> TODO()
             HomeEvent.OnPickedClick -> TODO()
