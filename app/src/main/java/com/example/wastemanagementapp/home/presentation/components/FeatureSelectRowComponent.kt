@@ -23,8 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wastemanagementapp.R
-import com.example.wastemanagementapp.core.util.NavigationEvent
-import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.home.presentation.HomeEvent
 import com.example.wastemanagementapp.home.presentation.models.FeatureSelection
 import com.example.wastemanagementapp.home.presentation.util.FeatureId
@@ -51,12 +49,12 @@ fun FeatureSelectRowComponent(
                             onEvent(HomeEvent.OnEcoCollectClick)
                             Log.i("feature", "FeatureSelectRowComponent: $id")
                         }
-                        FeatureId.FEEDBACK -> {
-                            onEvent(HomeEvent.OnFeedbackClick)
+                        FeatureId.TRACKING -> {
+                            onEvent(HomeEvent.OnTrackingClick)
                             Log.i("feature", "FeatureSelectRowComponent: $id")
                         }
-                        FeatureId.COMPLAINT -> {
-                            onEvent(HomeEvent.OnComplaintClick)
+                        FeatureId.SCHEDULE -> {
+                            onEvent(HomeEvent.OnScheduleClick)
                             Log.i("feature", "FeatureSelectRowComponent: $id")
                         }
                     }
@@ -107,12 +105,12 @@ private fun FeaturePreview() {
         FeatureSelection(
             icon = painterResource(id = R.drawable.feedback),
             text = stringResource(R.string.feedback),
-            id = FeatureId.FEEDBACK
+            id = FeatureId.TRACKING
         ),
         FeatureSelection(
             icon = painterResource(id = R.drawable.complaint),
             text = stringResource(R.string.complaint),
-            id = FeatureId.COMPLAINT
+            id = FeatureId.SCHEDULE
         )
     )
     FeatureSelectRowComponent(featureSelectionList = featureSelectionList)
