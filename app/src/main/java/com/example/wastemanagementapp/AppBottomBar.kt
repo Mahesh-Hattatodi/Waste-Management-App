@@ -31,19 +31,9 @@ fun AppBottomBar(
 
     val bottomNavigationItems = listOf(
         BottomNavigationItem(
-            iconSelected = painterResource(R.drawable.faq_icon),
-            name = stringResource(R.string.faq),
-            route = Screen.FaqScreen
-        ),
-        BottomNavigationItem(
-            iconSelected = painterResource(R.drawable.track_icon),
-            name = stringResource(R.string.tracking),
-            route = Screen.TrackScreen
-        ),
-        BottomNavigationItem(
-            iconSelected = painterResource(R.drawable.calendar),
-            name = stringResource(R.string.calender),
-            route = Screen.ScheduleScreen
+            iconSelected = painterResource(R.drawable.user_icon),
+            name = stringResource(R.string.profile),
+            route = Screen.ProfileScreen
         ),
         BottomNavigationItem(
             iconSelected = painterResource(R.drawable.support_icon),
