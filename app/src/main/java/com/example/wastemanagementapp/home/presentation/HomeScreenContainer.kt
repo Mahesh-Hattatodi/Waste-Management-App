@@ -39,14 +39,14 @@ fun HomeScreenContainer(
         ),
 
         FeatureSelection(
-            icon = painterResource(id = R.drawable.feedback),
-            text = stringResource(R.string.feedback),
-            id = FeatureId.FEEDBACK
+            icon = painterResource(id = R.drawable.tracking_feature_icon),
+            text = stringResource(R.string.tracking),
+            id = FeatureId.TRACKING
         ),
         FeatureSelection(
-            icon = painterResource(id = R.drawable.complaint),
-            text = stringResource(R.string.complaint),
-            id = FeatureId.COMPLAINT
+            icon = painterResource(id = R.drawable.schedule_feature_icon),
+            text = stringResource(R.string.schedule),
+            id = FeatureId.SCHEDULE
         )
     )
 
@@ -142,14 +142,14 @@ private fun HomeScreenPreview() {
         ),
 
         FeatureSelection(
-            icon = painterResource(id = R.drawable.feedback),
-            text = stringResource(R.string.feedback),
-            id = FeatureId.FEEDBACK
+            icon = painterResource(id = R.drawable.tracking_feature_icon),
+            text = stringResource(R.string.tracking),
+            id = FeatureId.TRACKING
         ),
         FeatureSelection(
-            icon = painterResource(id = R.drawable.complaint),
-            text = stringResource(R.string.complaint),
-            id = FeatureId.COMPLAINT
+            icon = painterResource(id = R.drawable.schedule_feature_icon),
+            text = stringResource(R.string.schedule),
+            id = FeatureId.SCHEDULE
         )
     )
 
