@@ -12,20 +12,47 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wastemanagementapp.R
-import com.example.wastemanagementapp.core.util.Screen
+import com.example.wastemanagementapp.core.util.NavigationEvent
+import com.example.wastemanagementapp.core.util.ObserveAsEvents
 
 @Composable
-fun SupportScreen(navController: NavController) {
+fun SupportContainer(
+    modifier: Modifier = Modifier,
+    viewModel: SupportViewModel = hiltViewModel(),
+    onNavigate: (NavigationEvent.Navigate) -> Unit = {}
+) {
+
+    ObserveAsEvents(flow = viewModel.navigationEvent) { event ->
+        when (event) {
+            is NavigationEvent.Navigate -> {
+                onNavigate(event)
+            }
+
+            NavigationEvent.PopBackStack -> Unit
+        }
+    }
+
+    SupportScreen(
+        modifier = modifier,
+        onEvent = viewModel::onEvent
+    )
+}
+
+@Composable
+fun SupportScreen(
+    modifier: Modifier = Modifier,
+    onEvent: (SupportScreenEvent) -> Unit = {}
+) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -33,13 +60,13 @@ fun SupportScreen(navController: NavController) {
         // Header Image
         Image(
             painter = painterResource(id = R.drawable.banner_intro),
-            contentDescription = "Support Image",
+            contentDescription = stringResource(R.string.support_image),
             modifier = Modifier
                 .size(300.dp)
                 .padding(bottom = 5.dp)
         )
 
-        Text(text = "Support", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.support), fontSize = 28.sp, fontWeight = FontWeight.Bold)
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -50,12 +77,20 @@ fun SupportScreen(navController: NavController) {
         ) {
             SupportOption(
                 icon = R.drawable.baseline_local_phone,
-                title = "Call Us",
-                subtitle = "Talk to our executive")
+                title = stringResource(R.string.call_us),
+                subtitle = stringResource(R.string.talk_to_our_executive),
+                onClick = {
+                    onEvent(SupportScreenEvent.OnCallUsRequest)
+                }
+            )
             SupportOption(
                 icon = R.drawable.baseline_email,
-                title = "Mail Us",
-                subtitle = "Mail to our executive")
+                title = stringResource(R.string.mail_us),
+                subtitle = stringResource(R.string.mail_to_our_executive),
+                onClick = {
+                    onEvent(SupportScreenEvent.OnEmailUsRequest)
+                }
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -63,30 +98,35 @@ fun SupportScreen(navController: NavController) {
         // FAQs & Feedback Buttons
         SupportButton(
             icon = R.drawable.baseline_question_mark,
-            title = "FAQs",
-            subtitle = "Discover App Information",
-            onClick = { navController.navigate(Screen.FeedbackScreen) } //faq screen
+            title = stringResource(R.string.faqs),
+            subtitle = stringResource(R.string.discover_app_information),
+            onClick = { onEvent(SupportScreenEvent.OnFaqClick) } //faq screen
         )
 
         SupportButton(
             icon = R.drawable.baseline_comment,
-            title = "Feedback",
-            subtitle = "Tell us what you think of our App",
-            onClick = { navController.navigate(Screen.FeedbackScreen) }
+            title = stringResource(R.string.feedback),
+            subtitle = stringResource(R.string.tell_us_what_you_think_of_our_app),
+            onClick = { onEvent(SupportScreenEvent.OnFeedbackClick) }
         )
 
         SupportButton(
             icon = R.drawable.baseline_activity,
-            title = "Raise a Concern",
-            subtitle = "Raise a Complaint & Help Keep Our Community Clean!",
-            onClick = { navController.navigate(Screen.ComplaintScreen) }
+            title = stringResource(R.string.raise_a_concern),
+            subtitle = stringResource(R.string.raise_a_complaint_help_keep_our_community_clean),
+            onClick = { onEvent(SupportScreenEvent.OnComplaintClick) }
         )
     }
 }
 
 // Call & Mail Buttons
 @Composable
-fun SupportOption(icon: Int, title: String, subtitle: String) {
+fun SupportOption(
+    icon: Int,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .size(140.dp)
@@ -108,7 +148,7 @@ fun SupportOption(icon: Int, title: String, subtitle: String) {
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(
-            onClick = { /* Handle Click */ },
+            onClick = onClick,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFDCEFD9))
         ) {
             Text(text = title, fontWeight = FontWeight.Bold, color = Color.Black)
@@ -160,6 +200,6 @@ fun SupportButton(icon: Int, title: String, subtitle: String, onClick: () -> Uni
 @Preview(showBackground = true)
 @Composable
 fun PreviewSupportScreen() {
-    SupportScreen(rememberNavController())
+    SupportScreen()
 }
 
