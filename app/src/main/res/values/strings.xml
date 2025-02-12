@@ -31,7 +31,7 @@
     <string name="user_image">User image</string>
     <string name="ranking">Ranking: %1$s</string>
     <string name="hero_image">hero image</string>
-    <string name="feature_eco_collect">EcoCollect</string>
+    <string name="feature_eco_collect">TruckService</string>
     <string name="complaint">Complaint</string>
     <string name="feedback">FeedBack</string>
     <string name="have_they_collected_the_waste_today">Have they collected the waste today?</string>
@@ -70,6 +70,15 @@
     <string name="tracking">Tracking</string>
     <string name="calender">Calender</string>
     <string name="faq">FAQ</string>
+    <string name="schedule">Schedule</string>
+    <string name="profile">Profile</string>
+    <string name="faq_image">FAQ Image</string>
+    <string name="how_can_we_help">How Can We Help?</string>
+    <string name="welcome_to_our_app_support_ask_anything_our_support_community_can_help_you_find_answers_to_all_your_queries">Welcome to our App Support. Ask anything. Our Support Community can help you find answers to all your queries.</string>
+    <string name="app">App</string>
+    <string name="general">General</string>
+    <string name="usage">Usage</string>
+    <string name="troubleshooting">Troubleshooting</string>
 
     <string-array name="list_of_complaint_category">
         <item name="garbage_collection">Garbage Collection</item>
