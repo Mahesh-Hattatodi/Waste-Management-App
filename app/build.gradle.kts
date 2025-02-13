@@ -112,6 +112,14 @@ dependencies {
 
     // Kotlin coroutines
     implementation(libs.kotlinx.coroutines.android)
+
+    // Material three extended
+    implementation ("androidx.compose.material3:material3:1.2.0")
+    implementation ("androidx.compose.material3:material3-window-size-class:1.2.0")
+    implementation ("androidx.compose.material:material-icons-extended:1.7.7")
+
+    // Splash screen
+    implementation(libs.androidx.core.splashscreen)
 }
 
 // Allow references to generated code
