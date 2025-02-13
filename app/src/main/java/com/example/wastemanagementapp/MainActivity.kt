@@ -1,7 +1,6 @@
 package com.example.wastemanagementapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
@@ -44,6 +44,7 @@ import com.example.wastemanagementapp.complaint.presentation.screens.ComplaintSc
 import com.example.wastemanagementapp.core.util.ObserveAsEvents
 import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.core.util.SnackBarController
+import com.example.wastemanagementapp.eco_collect.presentation.EventTruckBookingScreenContainer
 import com.example.wastemanagementapp.faq.presentation.FAQContainer
 import com.example.wastemanagementapp.feedback.presentation.FeedbackContainer
 import com.example.wastemanagementapp.home.presentation.HomeScreenContainer
@@ -52,12 +53,22 @@ import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition{true}
+
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(3000L)
+            splashScreen.setKeepOnScreenCondition{false}
+        }
+
         setContent {
             WasteManagementAppTheme {
                 val snackBarHostState = remember {
@@ -67,8 +78,6 @@ class MainActivity : ComponentActivity() {
                 var isBottomBarActive by remember {
                     mutableStateOf(false)
                 }
-
-                Log.i("ui", "onCreate: $isBottomBarActive")
 
                 val loginViewModel: LoginViewModel = hiltViewModel()
                 val authState by loginViewModel.authState.collectAsStateWithLifecycle()
@@ -216,6 +225,11 @@ class MainActivity : ComponentActivity() {
                             composable<Screen.ProfileScreen> {
                                 isBottomBarActive = true
                                 Text(text = "Profile screen", color = Color.Red)
+                            }
+
+                            composable<Screen.EcoCollectScreen> {
+                                isBottomBarActive = false
+                                EventTruckBookingScreenContainer()
                             }
                         }
                     }
