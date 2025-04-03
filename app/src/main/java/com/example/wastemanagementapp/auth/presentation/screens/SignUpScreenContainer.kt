@@ -73,6 +73,7 @@ fun SignUpScreenContainer(
     SignUpScreen(
         name = state.name,
         email = state.email,
+        ward = state.ward,
         password = state.password,
         confirmPassword = state.confirmPassword,
         onEvent = viewModel::onEvent,
@@ -86,6 +87,7 @@ fun SignUpScreenContainer(
 fun SignUpScreen(
     name: String = "",
     email: String = "",
+    ward: String = "",
     password: String = "",
     confirmPassword: String = "",
     onEvent: (SignUpEvent) -> Unit = {},
@@ -213,6 +215,49 @@ fun SignUpScreen(
                     .align(Alignment.CenterHorizontally)
             )
         }
+
+        Spacer(modifier = Modifier.height(18.dp))
+
+        TextField(
+            value = ward,
+            onValueChange = {
+                onEvent(SignUpEvent.OnWardChange(it))
+            },
+            modifier = textFieldShadow,
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = stringResource(R.string.enter_ward_number)
+                )
+            },
+            isError = emailError != null,
+            label = {
+                Text(
+                    text = stringResource(R.string.ward),
+                    color = MaterialTheme.colorScheme.primaryContainer
+                )
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    focusManager.moveFocus(focusDirection = FocusDirection.Down)
+                }
+            ),
+            singleLine = true,
+            shape = RoundedCornerShape(25.dp),
+            colors = TextFieldDefaults.colors(
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedContainerColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                focusedTextColor = Black20,
+                unfocusedTextColor = Black20,
+                errorContainerColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                errorTextColor = Black20
+            )
+        )
 
         Spacer(modifier = Modifier.height(18.dp))
 

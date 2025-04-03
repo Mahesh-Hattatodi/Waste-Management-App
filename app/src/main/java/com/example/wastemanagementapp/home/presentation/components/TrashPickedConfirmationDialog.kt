@@ -57,7 +57,9 @@ fun TrashPickedConfirmationDialog(
             Text(
                 text = stringResource(R.string.have_they_collected_the_waste_today),
                 fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.inversePrimary
+                color = MaterialTheme.colorScheme.inversePrimary,
+                modifier = Modifier
+                    .padding(top = 8.dp)
             )
             Row(
                 modifier = Modifier

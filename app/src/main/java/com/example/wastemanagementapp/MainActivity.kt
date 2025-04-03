@@ -1,6 +1,7 @@
 package com.example.wastemanagementapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,9 +35,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.wastemanagementapp.auth.presentation.screens.LoginScreenContainer
 import com.example.wastemanagementapp.auth.presentation.screens.SignUpScreenContainer
 import com.example.wastemanagementapp.auth.presentation.viewmodel.LoginViewModel
@@ -44,11 +48,16 @@ import com.example.wastemanagementapp.complaint.presentation.screens.ComplaintSc
 import com.example.wastemanagementapp.core.util.ObserveAsEvents
 import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.core.util.SnackBarController
-import com.example.wastemanagementapp.eco_collect.presentation.EventTruckBookingScreenContainer
+import com.example.wastemanagementapp.eco_collect.presentation.screen.EventPlaceSelectScreenContainer
+import com.example.wastemanagementapp.eco_collect.presentation.screen.EventTruckBookingScreenContainer
+import com.example.wastemanagementapp.eco_collect.presentation.viewmodel.EventInfoViewModel
+import com.example.wastemanagementapp.eco_collect.presentation.viewmodel.EventPlaceSelectViewModel
 import com.example.wastemanagementapp.faq.presentation.FAQContainer
 import com.example.wastemanagementapp.feedback.presentation.FeedbackContainer
 import com.example.wastemanagementapp.home.presentation.HomeScreenContainer
+import com.example.wastemanagementapp.profile.presentation.ProfileScreenContainer
 import com.example.wastemanagementapp.support.presentation.SupportContainer
+import com.example.wastemanagementapp.ui.theme.DarkGreen40
 import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -62,11 +71,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition{true}
+        splashScreen.setKeepOnScreenCondition { true }
 
         CoroutineScope(Dispatchers.Main).launch {
-            delay(3000L)
-            splashScreen.setKeepOnScreenCondition{false}
+            delay(1000L)
+            splashScreen.setKeepOnScreenCondition { false }
         }
 
         setContent {
@@ -75,14 +84,14 @@ class MainActivity : ComponentActivity() {
                     SnackbarHostState()
                 }
 
-                var isBottomBarActive by remember {
-                    mutableStateOf(false)
-                }
-
                 val loginViewModel: LoginViewModel = hiltViewModel()
                 val authState by loginViewModel.authState.collectAsStateWithLifecycle()
 
                 val navController = rememberNavController()
+
+                var isBottomBarActive by remember {
+                    mutableStateOf(false)
+                }
 
                 val scope = rememberCoroutineScope()
                 ObserveAsEvents(
@@ -101,6 +110,14 @@ class MainActivity : ComponentActivity() {
                         if (result == SnackbarResult.ActionPerformed) {
                             event.action?.action?.invoke()
                         }
+                    }
+                }
+
+                val currentBackStackEntry by navController.currentBackStackEntryAsState()
+
+                LaunchedEffect(currentBackStackEntry) {
+                    currentBackStackEntry?.let { entry ->
+                        Log.d("Navigation", "Current screen: ${entry.destination.route}")
                     }
                 }
 
@@ -125,7 +142,14 @@ class MainActivity : ComponentActivity() {
                             if (isBottomBarActive) {
                                 AppBottomBar(
                                     onClick = { navEvent ->
-                                        navController.navigate(navEvent.screen)
+                                        navController.navigate(navEvent.screen) {
+                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                saveState = true
+                                                inclusive = false
+                                            }
+                                            launchSingleTop = true
+                                            restoreState = true
+                                        }
                                     }
                                 )
                             }
@@ -133,13 +157,20 @@ class MainActivity : ComponentActivity() {
                         floatingActionButton = {
                             if (isBottomBarActive) {
                                 FloatingActionButton(
-                                    onClick = { navController.navigate(Screen.HomeScreen) },
+                                    onClick = {
+                                        navController.navigate(Screen.HomeScreen) {
+                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                inclusive = false
+                                            }
+                                            launchSingleTop = true
+                                        }
+                                    },
                                     containerColor = MaterialTheme.colorScheme.inversePrimary,
                                     contentColor = Color.White,
                                     shape = CircleShape,
                                     modifier = Modifier
-                                        .offset(y = 60.dp)
-                                        .size(72.dp)
+                                        .offset(y = 82.dp)
+                                        .size(54.dp)
                                 ) {
                                     Icon(
                                         painter = painterResource(R.drawable.home),
@@ -188,24 +219,27 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
 
-                            composable<Screen.TrackScreen> {
-                                isBottomBarActive = false
-                                Text("Hello")
-                            }
-
                             composable<Screen.ScheduleScreen> {
                                 isBottomBarActive = false
-                                Text("Jello")
+                                Text("schedule")
                             }
 
                             composable<Screen.ComplaintScreen> {
                                 isBottomBarActive = false
-                                ComplaintScreenContainer()
+                                ComplaintScreenContainer(
+                                    onPopBackStack = {
+                                        navController.popBackStack()
+                                    }
+                                )
                             }
 
                             composable<Screen.FeedbackScreen> {
                                 isBottomBarActive = false
-                                FeedbackContainer()
+                                FeedbackContainer(
+                                    popBackStack = {
+                                        navController.popBackStack()
+                                    }
+                                )
                             }
 
                             composable<Screen.FaqScreen> {
@@ -224,12 +258,50 @@ class MainActivity : ComponentActivity() {
 
                             composable<Screen.ProfileScreen> {
                                 isBottomBarActive = true
-                                Text(text = "Profile screen", color = Color.Red)
+                                ProfileScreenContainer()
                             }
 
                             composable<Screen.EcoCollectScreen> {
                                 isBottomBarActive = false
-                                EventTruckBookingScreenContainer()
+                                EventTruckBookingScreenContainer(
+                                    onNavigate = { place ->
+                                        navController.navigate(
+                                            Screen.EventPlaceSelectScreen(
+                                                lat = place.lat.toDoubleOrNull() ?: 12.9141,
+                                                lon = place.lon.toDoubleOrNull() ?: 74.8560,
+                                                displayName = place.displayName
+                                            )
+                                        )
+                                    },
+                                    onPopBackStack = {
+                                        navController.popBackStack()
+                                    }
+                                )
+                            }
+
+                            composable<Screen.EventPlaceSelectScreen> { backStackEntry ->
+                                isBottomBarActive = false
+                                val eventLocation = requireNotNull(backStackEntry.toRoute<Screen.EventPlaceSelectScreen>())
+                                val eventPlaceSelectViewModel : EventPlaceSelectViewModel = hiltViewModel()
+
+                                LaunchedEffect(eventLocation) {
+                                    eventPlaceSelectViewModel.setEventLocation(eventLocation)
+                                }
+
+                                val eventInfoViewModel : EventInfoViewModel? = navController.previousBackStackEntry
+                                    ?.let { previousEntry ->
+                                        hiltViewModel(previousEntry)
+                                    }
+
+                                EventPlaceSelectScreenContainer(
+                                    viewModel = eventPlaceSelectViewModel,
+                                    onPopBackStack = {
+                                        eventInfoViewModel?.setEventLocation(
+                                            eventPlaceSelectViewModel.searchAddress.value
+                                        )
+                                        navController.popBackStack()
+                                    }
+                                )
                             }
                         }
                     }

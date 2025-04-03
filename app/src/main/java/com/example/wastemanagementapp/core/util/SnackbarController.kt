@@ -10,7 +10,8 @@ data class SnackBarEvent(
 
 data class SnackBarAction(
     val name: String,
-    val action: suspend () -> Unit
+    val action: suspend () -> Unit,
+    val maxRetries: Int = 3
 )
 
 object SnackBarController {
@@ -22,3 +23,24 @@ object SnackBarController {
         _events.send(event)
     }
 }
+
+//suspend fun retryAction(action: SnackBarAction) {
+//    var retryCount = 0
+//    while (retryCount < action.maxRetries) {
+//        Log.i("updateUserPoint", "retryAction: $retryCount")
+//        try {
+//            action.action()
+//            return
+//        } catch (e: Exception) {
+//            retryCount++
+//            if (retryCount < action.maxRetries) {
+//                delay(1000L * retryCount) // Exponential backoff
+//            }
+//        }
+//    }
+//
+//    SnackBarController.sendEvent(
+//        SnackBarEvent(UiText.StringResource(R.string.retry_failed))
+//    )
+//}
+

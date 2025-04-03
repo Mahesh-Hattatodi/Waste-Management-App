@@ -8,6 +8,7 @@ data class RegistrationFormState(
     val emailError: UiText.StringResource? = null,
     val password: String = "",
     val passwordError: UiText.StringResource? = null,
+    val ward: String = "",
     val confirmPassword: String = "",
     val confirmPasswordError: UiText.StringResource? = null
 )

@@ -8,5 +8,6 @@ data class ComplaintScreenState(
     val address: String = "",
     val selectedCategory: String = "Select Complaint Category",
     val complaintDetails: String = "",
-    val imageUri: Uri? = null
+    val imageUri: Uri? = null,
+    val isSubmitting: Boolean = false
 )

@@ -31,10 +31,11 @@ import com.example.wastemanagementapp.home.presentation.util.FeatureId
 fun FeatureSelectRowComponent(
     modifier: Modifier = Modifier,
     onEvent: (HomeEvent) -> Unit = {},
-    featureSelectionList: List<FeatureSelection> = emptyList()
+    featureSelectionList: List<FeatureSelection> = emptyList(),
+    onTrackClick: () -> Unit = {}
 ) {
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
@@ -50,7 +51,7 @@ fun FeatureSelectRowComponent(
                             Log.i("feature", "FeatureSelectRowComponent: $id")
                         }
                         FeatureId.TRACKING -> {
-                            onEvent(HomeEvent.OnTrackingClick)
+                            onTrackClick()
                             Log.i("feature", "FeatureSelectRowComponent: $id")
                         }
                         FeatureId.SCHEDULE -> {
@@ -80,13 +81,13 @@ fun FeatureComponent(
             contentDescription = feature.text,
             modifier = Modifier
                 .clip(CircleShape)
-                .size(70.dp)
+                .size(55.dp)
         )
 
         Text(
             text = feature.text,
             color = Color.Black,
-            fontSize = 12.sp,
+            fontSize = 8.sp,
             fontWeight = FontWeight.SemiBold
         )
     }

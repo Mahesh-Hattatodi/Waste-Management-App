@@ -2,20 +2,23 @@ package com.example.wastemanagementapp.complaint.presentation.screens
 
 import android.content.Context
 import android.net.Uri
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -42,14 +45,26 @@ import com.example.wastemanagementapp.R
 import com.example.wastemanagementapp.complaint.presentation.events.ComplaintEvent
 import com.example.wastemanagementapp.complaint.presentation.state.ComplaintScreenState
 import com.example.wastemanagementapp.complaint.presentation.viewmodel.ComplaintViewModel
+import com.example.wastemanagementapp.core.util.NavigationEvent
+import com.example.wastemanagementapp.core.util.ObserveAsEvents
 
 @Composable
 fun ComplaintScreenContainer(
     modifier: Modifier = Modifier,
-    viewModel: ComplaintViewModel = hiltViewModel()
+    viewModel: ComplaintViewModel = hiltViewModel(),
+    onPopBackStack: () -> Unit = {}
 ) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    ObserveAsEvents(
+        flow = viewModel.navigationEvent
+    ) { event ->
+        when (event) {
+            is NavigationEvent.Navigate -> Unit
+            NavigationEvent.PopBackStack -> onPopBackStack()
+        }
+    }
 
     ComplaintScreen(
         modifier = modifier,
@@ -228,17 +243,37 @@ fun ComplaintScreen(
             // Submit Button
             Button(
                 onClick = {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.complaint_submitted), Toast.LENGTH_SHORT
-                    ).show()
+                    onEvent(ComplaintEvent.SubmitComplaint)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF386641))
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF386641),
+                    disabledContainerColor = Color(0xFFD3D3D3)
+                ),
+                enabled = !state.isSubmitting
             ) {
-                Text(stringResource(R.string.submit_complaint), color = Color.White)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = if (state.isSubmitting) Arrangement.SpaceBetween else Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.submit_complaint),
+                        color = Color.White
+                    )
+
+                    if (state.isSubmitting) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(20.dp)
+                                .padding(end = 8.dp),
+                            color = Color.White,
+                            strokeWidth = 2.dp
+                        )
+                    }
+                }
             }
         }
     }

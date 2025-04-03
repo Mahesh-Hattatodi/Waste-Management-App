@@ -12,7 +12,6 @@ import com.example.wastemanagementapp.auth.domain.use_cases.ValidateEmail
 import com.example.wastemanagementapp.auth.domain.use_cases.ValidatePassword
 import com.example.wastemanagementapp.auth.presentation.state.RegistrationFormState
 import com.example.wastemanagementapp.auth.presentation.events.SignUpEvent
-import com.example.wastemanagementapp.core.domain.UserProfile
 import com.example.wastemanagementapp.core.util.NavigationEvent
 import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.core.util.SnackBarController
@@ -37,6 +36,7 @@ class SignUpViewModel @Inject constructor(
 
     private val _navigationEvent = Channel<NavigationEvent>()
     val navigationEvent = _navigationEvent.receiveAsFlow()
+
     fun onEvent(event: SignUpEvent) {
         when (event) {
             is SignUpEvent.OnConfirmPasswordChange -> {
@@ -50,6 +50,9 @@ class SignUpViewModel @Inject constructor(
             }
             is SignUpEvent.OnPasswordChange -> {
                 state = state.copy(password = event.password)
+            }
+            is SignUpEvent.OnWardChange -> {
+               state = state.copy(ward = event.ward)
             }
             SignUpEvent.OnSignUpClick -> {
                 submitData()
@@ -81,11 +84,10 @@ class SignUpViewModel @Inject constructor(
             saveUserAndSendEmailVerification(
                 email = state.email,
                 password = state.password,
-                userProfile = UserProfile(
-                    email = state.email,
-                    displayName = state.name
-                )
+                displayName = state.name,
+                ward = state.ward
             )
+
             SnackBarController.sendEvent(
                 event = SnackBarEvent(
                     message = UiText.StringResource(
@@ -97,12 +99,13 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    private suspend fun saveUserAndSendEmailVerification(email: String, password: String, userProfile: UserProfile) {
+    private suspend fun saveUserAndSendEmailVerification(email: String, password: String, displayName: String, ward: String) {
         withContext(Dispatchers.IO) {
             repository.saveUserAndSendEmailVerification(
                 email = email,
                 password = password,
-                userProfile = userProfile
+                displayName = displayName,
+                ward = ward
             )
         }
     }

@@ -79,6 +79,58 @@
     <string name="general">General</string>
     <string name="usage">Usage</string>
     <string name="troubleshooting">Troubleshooting</string>
+    <string name="user_data_is_null">User data is null</string>
+    <string name="data_is_null">data is null</string>
+    <string name="fill_all_the_fields">Fill all the fields</string>
+    <string name="check_your_internet_connection">Check your internet connection</string>
+    <string name="enter_ward_number">Enter ward number</string>
+    <string name="ward">WARD</string>
+    <string name="server_is_down">Server is down</string>
+    <string name="complaint_submission_cancelled">Complaint submission cancelled</string>
+    <string name="request_time_out">Request time out</string>
+    <string name="search">Search</string>
+    <string name="clear_search">Clear search</string>
+    <string name="search_field_is_empty">search field is empty</string>
+    <string name="selected_place">Selected place: %1$s</string>
+    <string name="confirm_location">Confirm location</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="schedule_garbage_trucks_for_your_event">Schedule Garbage Trucks for Your Event</string>
+    <string name="event_name">Event Name</string>
+    <string name="garbage_truck">Garbage Truck</string>
+    <string name="waste_type">Waste Type</string>
+    <string name="number_of_trucks_needed">Number of Trucks Needed</string>
+    <string name="delivery_shift">Delivery Shift</string>
+    <string name="estimated_weight">Estimated weight</string>
+    <string name="submit_booking">Submit Booking</string>
+    <string name="uploaded_image">Uploaded Image</string>
+    <string name="upload_permit">Upload Permit</string>
+    <string name="event_name_is_empty">Event name is empty</string>
+    <string name="all_schedules_need_to_be_specified">All schedules need to be specified</string>
+    <string name="invalid_phone_number">Invalid phone number</string>
+    <string name="permit_is_empty">Permit is empty</string>
+    <string name="organizer_name_is_empty">Organizer name is empty</string>
+    <string name="pickup_date_is_not_specified">Pickup date is not specified</string>
+    <string name="delivery_shift_is_not_specified">Delivery shift is not specified</string>
+    <string name="estimated_weight_is_empty">Estimated weight is empty</string>
+    <string name="truck_count_is_not_specified">Truck count is not specified</string>
+    <string name="event_information_submitted">Event information submitted</string>
+    <string name="image_file_too_large">Image file too large</string>
+    <string name="too_many_requests_try_again_after_some_time">Too many requests, try again after some time</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="event_location_is_not_specified">Event location is not specified</string>
+    <string name="event_information_submission_cancelled">Event information submission cancelled</string>
+    <string name="right_animation">Right animation</string>
+    <string name="picked_gif">Picked gif</string>
+    <string name="_2_eco_points_added_to_your_profile">2 eco points added to your profile</string>
+    <string name="error_while_updating_points">Error while updating points</string>
+    <string name="retry_failed">retry failed</string>
+    <string name="ward_information_is_needed">Ward information is needed</string>
+    <string name="required">Required</string>
+    <string name="confirm">Confirm</string>
+    <string name="enter_ward">Enter ward</string>
+    <string name="leaderboard">Leaderboard</string>
 
     <string-array name="list_of_complaint_category">
         <item name="garbage_collection">Garbage Collection</item>
@@ -93,5 +145,35 @@
         <item name="bug_report">Bug Report</item>
         <item name="feature_request">Feature Request</item>
         <item name="other">Other</item>
+    </string-array>
+
+    <string-array name="list_of_waste_type">
+        <item name="general_waste">General Waste</item>
+        <item name="food_waste">Food Waste</item>
+        <item name="recycling_waste">Recyclable Waste</item>
+        <item name="plastic_waste">Plastic Waste</item>
+        <item name="Other">Other</item>
+    </string-array>
+
+    <string-array name="list_of_truck_count">
+        <item name="one">1</item>
+        <item name="two">2</item>
+        <item name="three">3</item>
+        <item name="four">4</item>
+        <item name="five_plus">5+</item>
+    </string-array>
+
+    <string-array name="list_of_delivery_shift">
+        <item name="morning">Morning</item>
+        <item name="afternoon">Afternoon</item>
+        <item name="evening">Evening</item>
+        <item name="night">Night</item>
+    </string-array>
+
+    <string-array name="list_of_estimated_weight">
+        <item name="less_than_five">&lt; 5kg</item>
+        <item name="five_to_ten">5\-10kg</item>
+        <item name="ten_to_twenty">10\-20kg</item>
+        <item name="night">&gt; 20kg</item>
     </string-array>
 </resources>

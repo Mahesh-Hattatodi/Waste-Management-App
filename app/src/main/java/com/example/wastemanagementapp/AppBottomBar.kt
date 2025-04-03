@@ -21,7 +21,9 @@ import androidx.compose.ui.unit.sp
 import com.example.wastemanagementapp.core.util.NavigationEvent
 import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.core.presentation.BottomNavigationItem
+import com.example.wastemanagementapp.ui.theme.Green40
 import com.example.wastemanagementapp.ui.theme.Green80
+import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 
 @Composable
 fun AppBottomBar(
@@ -55,6 +57,7 @@ fun AppBottomBar(
             }
         },
         containerColor = Green80,
+        contentColor = Color.Black,
         modifier = modifier
             .clip(
                 shape = RoundedCornerShape(
@@ -82,7 +85,7 @@ fun BottomNavigationItemComponent(
                 painter = bottomNavigationItem.iconSelected,
                 contentDescription = bottomNavigationItem.name,
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(30.dp)
             )
         }
 
@@ -98,5 +101,7 @@ fun BottomNavigationItemComponent(
 @Preview
 @Composable
 private fun AppBottomBarPreview() {
-    AppBottomBar()
+    WasteManagementAppTheme {
+        AppBottomBar()
+    }
 }

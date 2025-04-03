@@ -23,9 +23,6 @@ sealed class Screen {
     data object EcoCollectScreen : Screen()
 
     @Serializable
-    data object TrackScreen : Screen()
-
-    @Serializable
     data object ScheduleScreen : Screen()
 
     @Serializable
@@ -36,4 +33,11 @@ sealed class Screen {
 
     @Serializable
     data object ProfileScreen : Screen()
+
+    @Serializable
+    data class EventPlaceSelectScreen(
+        val lat: Double,
+        val lon: Double,
+        val displayName: String
+    ) : Screen()
 }

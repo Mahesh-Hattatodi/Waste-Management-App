@@ -10,5 +10,7 @@ sealed class SignUpEvent {
 
     data class OnConfirmPasswordChange(val confirmPassword: String) : SignUpEvent()
 
+    data class OnWardChange(val ward: String) : SignUpEvent()
+
     data object OnSignUpClick : SignUpEvent()
 }

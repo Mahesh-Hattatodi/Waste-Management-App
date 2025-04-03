@@ -7,9 +7,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wastemanagementapp.R
+import com.example.wastemanagementapp.auth.data.VerificationResult
 import com.example.wastemanagementapp.auth.domain.LoginRepository
 import com.example.wastemanagementapp.auth.presentation.events.LoginEvent
-import com.example.wastemanagementapp.core.domain.UserProfile
+import com.example.wastemanagementapp.core.domain.model.UserProfile
 import com.example.wastemanagementapp.core.util.NavigationEvent
 import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.core.util.SnackBarController
@@ -47,22 +48,25 @@ class LoginViewModel @Inject constructor(
     var password by mutableStateOf("")
         private set
 
+    var ward by mutableStateOf("")
+        private set
+
     private val _navigationEvent = Channel<NavigationEvent>()
     val navigationEvent = _navigationEvent.receiveAsFlow()
 
     fun saveGoogleUser(authResult: Result<AuthResult>) {
         authResult.fold(
             onSuccess = { authResult ->
-                _userProfile.update { userProfile ->
-                    userProfile.copy(
-                        uuid = authResult.user!!.uid,
-                        displayName = authResult.user!!.displayName,
-                        email = authResult.user!!.email,
-                        photoUrl = authResult.user!!.photoUrl.toString()
-                    )
-                }
-
                 viewModelScope.launch {
+                    _userProfile.update { userProfile ->
+                        userProfile.copy(
+                            uuid = authResult.user!!.uid,
+                            displayName = authResult.user!!.displayName,
+                            email = authResult.user!!.email,
+                            photoUrl = authResult.user!!.photoUrl.toString(),
+                            ward = ward
+                        )
+                    }
                     saveUserProfile(_userProfile.value)
                     SnackBarController.sendEvent(
                         event = SnackBarEvent(
@@ -92,7 +96,7 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun saveUserProfile(userProfile: UserProfile) {
         withContext(Dispatchers.IO) {
-            loginRepository.saveGoogleUserProfile(userProfile)
+            loginRepository.saveUserProfile(userProfile)
         }
     }
 
@@ -106,25 +110,24 @@ class LoginViewModel @Inject constructor(
                 password = event.password
             }
 
+            is LoginEvent.OnWardChange -> {
+                ward = event.ward
+            }
+
             LoginEvent.OnSignInClick -> {
                 viewModelScope.launch {
-                    loginUserWithEmailAndPassword(email, password)
-                    val verification = emailVerifiedOrNot(email)
-                    if (verification == true && authState.value != null) {
+                    val verificationResult = loginAndVerify(email, password)
+                    if (verificationResult.success) {
                         SnackBarController.sendEvent(
                             event = SnackBarEvent(
-                                message = UiText.StringResource(
-                                    resId = R.string.login_successful
-                                )
+                                message = verificationResult.message ?: UiText.StringResource(resId = R.string.data_is_null)
                             )
                         )
                         sendEvent(NavigationEvent.Navigate(Screen.HomeScreen))
                     } else {
                         SnackBarController.sendEvent(
                             event = SnackBarEvent(
-                                message = UiText.StringResource(
-                                    resId = R.string.login_unsuccessful
-                                )
+                                message = verificationResult.message ?: UiText.StringResource(resId = R.string.data_is_null)
                             )
                         )
                     }
@@ -143,17 +146,17 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun loginUserWithEmailAndPassword(email: String, password: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            loginRepository.loginUserWithEmailAndPassword(email, password)
+    fun changeLoginButtonState() {
+        isLoginEnabled = email.isNotEmpty() && password.isNotEmpty()
+    }
+
+    private suspend fun loginAndVerify(email: String, password: String) : VerificationResult {
+        return withContext(Dispatchers.IO) {
+            loginRepository.loginAndVerify(email, password)
         }
     }
 
-    private suspend fun emailVerifiedOrNot(email: String): Boolean? {
-        return loginRepository.emailVerifiedOrNot(email)
-    }
-
-    fun changeLoginButtonState() {
-        isLoginEnabled = email.isNotEmpty() && password.isNotEmpty()
+    fun checkIfWardIsEmpty() : Boolean {
+        return ward.isEmpty()
     }
 }

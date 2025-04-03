@@ -1,8 +1,6 @@
 package com.example.wastemanagementapp.feedback.presentation
 
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,12 +24,22 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.wastemanagementapp.R
+import com.example.wastemanagementapp.core.util.NavigationEvent
+import com.example.wastemanagementapp.core.util.ObserveAsEvents
 
 @Composable
 fun FeedbackContainer(
-    viewModel: FeedbackViewModel = hiltViewModel()
+    viewModel: FeedbackViewModel = hiltViewModel(),
+    popBackStack: () -> Unit = {}
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    ObserveAsEvents(flow = viewModel.navEvent) { event ->
+        when (event) {
+            NavigationEvent.PopBackStack -> popBackStack()
+            else -> Unit
+        }
+    }
 
     FeedbackScreen(
         state = state,
@@ -118,10 +126,12 @@ fun FeedbackScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
-                label = { Text(
-                    text = stringResource(R.string.select_topic),
-                    color = Black
-                ) },
+                label = {
+                    Text(
+                        text = stringResource(R.string.select_topic),
+                        color = Black
+                    )
+                },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = state.isExpanded)
                 },
@@ -176,14 +186,36 @@ fun FeedbackScreen(
         Button(
             onClick = {
                 onEvent(FeedbackEvent.OnSubmitFeedback)
-                Toast.makeText(context,
-                    context.getString(R.string.feedback_submitted), Toast.LENGTH_SHORT).show()},
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF386641))
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF386641),
+                disabledContainerColor = Color(0xFFD3D3D3)
+            ),
+            enabled = !state.isSubmitting
         ) {
-            Text(stringResource(R.string.submit), color = Color.White)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = if (state.isSubmitting) Arrangement.SpaceBetween else Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.submit),
+                    color = Color.White
+                )
+
+                if (state.isSubmitting) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .padding(end = 8.dp),
+                        color = Color.White,
+                        strokeWidth = 2.dp
+                    )
+                }
+            }
         }
     }
 }

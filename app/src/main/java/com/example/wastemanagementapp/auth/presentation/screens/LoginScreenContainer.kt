@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -29,7 +30,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -50,12 +54,17 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wastemanagementapp.R
 import com.example.wastemanagementapp.auth.presentation.GoogleSignInClient
+import com.example.wastemanagementapp.auth.presentation.components.WardAlertDialog
 import com.example.wastemanagementapp.auth.presentation.events.LoginEvent
 import com.example.wastemanagementapp.auth.presentation.viewmodel.LoginViewModel
 import com.example.wastemanagementapp.core.util.NavigationEvent
 import com.example.wastemanagementapp.core.util.ObserveAsEvents
+import com.example.wastemanagementapp.core.util.SnackBarController
+import com.example.wastemanagementapp.core.util.SnackBarEvent
+import com.example.wastemanagementapp.core.util.UiText
 import com.example.wastemanagementapp.ui.theme.Black10
 import com.example.wastemanagementapp.ui.theme.Black20
+import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -75,6 +84,8 @@ fun LoginScreenContainer(
 ) {
     val googleSignInClient = GoogleSignInClient(context)
 
+    var isWardDialogOpen by remember { mutableStateOf(false) }
+
     ObserveAsEvents(flow = viewModel.navigationEvent) { event ->
         when (event) {
             is NavigationEvent.Navigate -> {
@@ -85,13 +96,41 @@ fun LoginScreenContainer(
         }
     }
 
+    when (isWardDialogOpen) {
+        true -> {
+            WardAlertDialog(
+                onDismissRequest = {
+                    isWardDialogOpen = false
+                },
+                onConfirmation = {
+                    scope.launch {
+                        if (viewModel.checkIfWardIsEmpty()) {
+                            SnackBarController.sendEvent(
+                                SnackBarEvent(
+                                    UiText.StringResource(R.string.ward_information_is_needed)
+                                )
+                            )
+                            return@launch
+                        }
+                        val authResult = googleSignInClient.googleSignIn()
+                        viewModel.saveGoogleUser(authResult)
+                        isWardDialogOpen = false
+                    }
+                },
+                dialogTitle = "Ward number",
+                ward = viewModel.ward,
+                onWardChange = {
+                    viewModel.onEvent(LoginEvent.OnWardChange(it))
+                },
+                icon = Icons.Default.Info
+            )
+        }
+        false -> Unit
+    }
+
     LoginScreen(
         onGoogleSignInClick = {
-            scope.launch {
-                val authResult = googleSignInClient.googleSignIn()
-
-                viewModel.saveGoogleUser(authResult)
-            }
+                isWardDialogOpen = true
         },
         onEvent = viewModel::onEvent,
         email = viewModel.email,
@@ -310,5 +349,7 @@ fun LoginScreen(
 @Preview
 @Composable
 private fun LoginScreenPreview() {
-    LoginScreen()
+    WasteManagementAppTheme {
+        LoginScreen()
+    }
 }

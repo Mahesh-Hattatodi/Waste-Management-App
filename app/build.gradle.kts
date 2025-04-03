@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.composeCompiler)
     // Kotlin serialization plugin for type safe routes and navigation arguments
     kotlin("plugin.serialization") version "2.0.21"
     // Kapt annotation processor
@@ -35,6 +36,12 @@ android {
 
         // Expose the API key to BuildConfig
         buildConfigField("String", "GOOGLE_SIGN_IN_WEB_API_KEY", "\"${localProperties["GOOGLE_SIGN_IN_WEB_API_KEY"]}\"")
+
+        buildConfigField("String", "SUPABASE_API_KEY", "\"${localProperties["SUPABASE_API_KEY"]}\"")
+
+        buildConfigField("String", "MAPS_API_KEY", "\"${localProperties["MAPS_API_KEY"]}\"")
+
+        manifestPlaceholders["MAPS_API_KEY"] = localProperties.getProperty("MAPS_API_KEY", "")
     }
 
     buildTypes {
@@ -88,6 +95,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation(libs.kotlin.stdlib)
+
     // Retrofit for api call
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
@@ -100,6 +109,8 @@ dependencies {
 
     // Coil image loading library
     implementation(libs.coil.compose)
+    implementation(libs.coil.gif)
+    implementation(libs.coil.network.okhttp)
 
     // Dagger and hilt
     implementation(libs.hilt.android)
@@ -120,6 +131,21 @@ dependencies {
 
     // Splash screen
     implementation(libs.androidx.core.splashscreen)
+
+    // Supabase storage
+    implementation(platform("io.github.jan-tennert.supabase:bom:3.1.1"))
+    implementation ("io.github.jan-tennert.supabase:storage-kt:3.1.1")
+    implementation("io.ktor:ktor-client-android:3.1.1")
+
+    // Maps
+    implementation(libs.maps.compose)
+
+    // Places
+    implementation (libs.places)
+
+    implementation (libs.kotlinx.coroutines.core)
+
+    implementation(libs.androidx.lifecycle.runtime.compose)
 }
 
 // Allow references to generated code
