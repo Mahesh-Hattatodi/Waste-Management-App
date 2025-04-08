@@ -11,4 +11,6 @@ sealed interface HomeEvent {
     data object OnPickedClick : HomeEvent
 
     data object OnNotPickedClick : HomeEvent
+
+    data object OnTrackClick: HomeEvent
 }

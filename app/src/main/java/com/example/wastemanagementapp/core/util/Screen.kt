@@ -26,6 +26,9 @@ sealed class Screen {
     data object ScheduleScreen : Screen()
 
     @Serializable
+    data object TrackScreen : Screen()
+
+    @Serializable
     data object FaqScreen : Screen()
 
     @Serializable

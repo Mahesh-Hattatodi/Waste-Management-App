@@ -51,7 +51,8 @@ fun FeatureSelectRowComponent(
                             Log.i("feature", "FeatureSelectRowComponent: $id")
                         }
                         FeatureId.TRACKING -> {
-                            onTrackClick()
+                            onEvent(HomeEvent.OnTrackClick)
+//                            onTrackClick()
                             Log.i("feature", "FeatureSelectRowComponent: $id")
                         }
                         FeatureId.SCHEDULE -> {

@@ -45,7 +45,7 @@ val userContactModifier = Modifier
 
 val allUserRankingModifier = Modifier
     .fillMaxWidth()
-    .padding(top = 12.dp, bottom = 12.dp)
+    .padding(bottom = 8.dp)
 
 @Composable
 fun ProfileScreenContainer(viewModel: ProfileViewModel = hiltViewModel()) {
@@ -116,6 +116,7 @@ fun ProfileScreen(
             fontSize = 26.sp,
             modifier = Modifier
                 .align(Alignment.Start)
+                .padding(bottom = 8.dp)
         )
 
         LazyColumn {

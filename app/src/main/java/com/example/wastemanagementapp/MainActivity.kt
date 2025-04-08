@@ -57,7 +57,7 @@ import com.example.wastemanagementapp.feedback.presentation.FeedbackContainer
 import com.example.wastemanagementapp.home.presentation.HomeScreenContainer
 import com.example.wastemanagementapp.profile.presentation.ProfileScreenContainer
 import com.example.wastemanagementapp.support.presentation.SupportContainer
-import com.example.wastemanagementapp.ui.theme.DarkGreen40
+import com.example.wastemanagementapp.track.presentation.TrackScreenContainer
 import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -222,6 +222,11 @@ class MainActivity : ComponentActivity() {
                             composable<Screen.ScheduleScreen> {
                                 isBottomBarActive = false
                                 Text("schedule")
+                            }
+
+                            composable<Screen.TrackScreen> {
+                                isBottomBarActive = false
+                                TrackScreenContainer()
                             }
 
                             composable<Screen.ComplaintScreen> {

@@ -90,6 +90,9 @@ class HomeViewModel @Inject constructor(
                 }
             }
             HomeEvent.OnProfileClick -> {}
+            HomeEvent.OnTrackClick -> {
+                sendEvent(NavigationEvent.Navigate(Screen.TrackScreen))
+            }
         }
     }
 
