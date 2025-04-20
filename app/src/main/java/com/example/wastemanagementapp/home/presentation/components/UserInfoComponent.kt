@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -38,6 +39,7 @@ import com.example.wastemanagementapp.R
 import com.example.wastemanagementapp.home.presentation.HomeEvent
 import com.example.wastemanagementapp.core.presentation.UserinfoUiModel
 import com.example.wastemanagementapp.ui.theme.DarkGreen40
+import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 
 @Composable
 fun UserInfoComponent(
@@ -115,11 +117,13 @@ fun UserInfoComponent(
 @Preview(showBackground = true)
 @Composable
 private fun UserInfoComponentPreview() {
-    UserInfoComponent(
-        userInfo = UserinfoUiModel(
-            ranking = "07",
-            displayName = "Mahesh",
-            email = "maheshhattatodi@gmail.com"
+    WasteManagementAppTheme {
+        UserInfoComponent(
+            userInfo = UserinfoUiModel(
+                ranking = "07",
+                displayName = "Mahesh",
+                email = "maheshhattatodi@gmail.com"
+            )
         )
-    )
+    }
 }

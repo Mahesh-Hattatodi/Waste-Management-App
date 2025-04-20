@@ -1,17 +1,38 @@
 package com.example.wastemanagementapp
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomAppBar
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -22,7 +43,7 @@ import com.example.wastemanagementapp.core.util.NavigationEvent
 import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.core.presentation.BottomNavigationItem
 import com.example.wastemanagementapp.ui.theme.Green40
-import com.example.wastemanagementapp.ui.theme.Green80
+import com.example.wastemanagementapp.ui.theme.LightGreenColor
 import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 
 @Composable
@@ -30,6 +51,7 @@ fun AppBottomBar(
     modifier: Modifier = Modifier,
     onClick: (NavigationEvent.Navigate) -> Unit = {}
 ) {
+    var selectedScreen by remember { mutableIntStateOf(1) }
 
     val bottomNavigationItems = listOf(
         BottomNavigationItem(
@@ -38,65 +60,129 @@ fun AppBottomBar(
             route = Screen.ProfileScreen
         ),
         BottomNavigationItem(
+            iconSelected = painterResource(R.drawable.home),
+            name = stringResource(R.string.home),
+            route = Screen.HomeScreen
+        ),
+        BottomNavigationItem(
             iconSelected = painterResource(R.drawable.support_icon),
             name = stringResource(R.string.support),
             route = Screen.SupportScreen
         ),
     )
 
-    BottomAppBar(
-        actions = {
-            bottomNavigationItems.forEach { bottomNavigationItem ->
-                BottomNavigationItemComponent(
-                    bottomNavigationItem = bottomNavigationItem,
-                    onClick = { screen ->
-                        onClick(NavigationEvent.Navigate(screen))
-                    },
-                    modifier = Modifier.weight(1f)
-                )
-            }
-        },
-        containerColor = Green80,
-        contentColor = Color.Black,
-        modifier = modifier
-            .clip(
-                shape = RoundedCornerShape(
-                    topEnd = 20.dp,
-                    topStart = 20.dp
+    Box(
+        modifier
+            .height(80.dp)
+            .fillMaxWidth()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        LightGreenColor,
+                        Color.White
+                    )
                 )
             )
-    )
+    ) {
+        Row(
+            Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            bottomNavigationItems.forEach { bottomNavigationItem ->
+                val isSelected =
+                    bottomNavigationItem.route == bottomNavigationItems[selectedScreen].route
+                val animatedWeight by animateFloatAsState(
+                    targetValue = if (isSelected) 1.5f else 1f
+                )
+                Box(
+                    modifier = Modifier.weight(animatedWeight),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    val interactionSource = remember { MutableInteractionSource() }
+                    BottomNavigationItemComponent(
+                        bottomNavigationItem = bottomNavigationItem,
+                        modifier = Modifier
+                            .clickable(
+                                interactionSource = interactionSource,
+                                indication = null
+                            ) {
+                                selectedScreen = bottomNavigationItems.indexOf(bottomNavigationItem)
+                                onClick(NavigationEvent.Navigate(bottomNavigationItems[selectedScreen].route))
+                            },
+                        isSelected = isSelected
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
 fun BottomNavigationItemComponent(
     bottomNavigationItem: BottomNavigationItem,
     modifier: Modifier = Modifier,
-    onClick: (Screen) -> Unit,
+    isSelected: Boolean,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-    ) {
-        IconButton(
-            onClick = { onClick(bottomNavigationItem.route) }
-        ) {
-            Icon(
-                painter = bottomNavigationItem.iconSelected,
-                contentDescription = bottomNavigationItem.name,
-                modifier = Modifier
-                    .size(30.dp)
-            )
-        }
-
-        Text(
-            text = bottomNavigationItem.name,
-            color = Color.Black,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Normal
+    val animatedElevation by animateDpAsState(targetValue = if (isSelected) 15.dp else 0.dp)
+    val animatedAlpha by animateFloatAsState(targetValue = if (isSelected) 1f else .5f)
+    val animatedIconSize by animateDpAsState(
+        targetValue = if (isSelected) 28.dp else 24.dp,
+        animationSpec = spring(
+            stiffness = Spring.StiffnessLow,
+            dampingRatio = Spring.DampingRatioMediumBouncy
         )
+    )
+    val animatedColor by animateColorAsState(
+        targetValue = if (isSelected) Green40 else Color.Transparent
+    )
+    val animationRotation by animateFloatAsState(
+        targetValue = if (isSelected) 180f else 0f,
+        animationSpec = spring(
+            stiffness = Spring.StiffnessLow,
+            dampingRatio = Spring.DampingRatioMediumBouncy
+        )
+    )
+
+    Box(
+        modifier = modifier
+            .size(60.dp) // Make this a square for perfect circle
+            .shadow(animatedElevation, shape = CircleShape, clip = false)
+            .background(animatedColor, shape = CircleShape),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(6.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .graphicsLayer { rotationY = animationRotation },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = bottomNavigationItem.iconSelected,
+                    contentDescription = bottomNavigationItem.name,
+                    modifier = Modifier
+                        .size(animatedIconSize)
+                        .alpha(animatedAlpha),
+                    tint = Color.Black
+                )
+            }
+
+            AnimatedVisibility(visible = isSelected) {
+                Text(
+                    text = bottomNavigationItem.name,
+                    color = Color.Black,
+                    fontSize = 8.sp,
+                    fontWeight = FontWeight.Normal,
+                    modifier = Modifier.padding(top = 2.dp, start = 2.dp, end = 2.dp)
+                )
+            }
+        }
     }
 }
+
 
 @Preview
 @Composable

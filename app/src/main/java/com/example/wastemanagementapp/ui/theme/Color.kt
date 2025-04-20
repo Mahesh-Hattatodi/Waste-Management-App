@@ -1,4 +1,5 @@
 package com.example.wastemanagementapp.ui.theme
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val Green10 = Color(0xff112213)
@@ -7,6 +8,10 @@ val Green30 = Color(0xff326738)
 val Green40 = Color(0xff428a4b)
 val Green80 = Color(0xffaed8b3)
 val Green90 = Color(0xffddeedf)
+
+val LightGreenColor = Color(0xffD0F987)
+val MainColor = Color(0xffA0CC51)
+val TextOrLogoColor = Color(0xff393939)
 
 val DarkGreen10 = Color(0xff092a0d)
 val DarkGreen20 = Color(0xff12541b)

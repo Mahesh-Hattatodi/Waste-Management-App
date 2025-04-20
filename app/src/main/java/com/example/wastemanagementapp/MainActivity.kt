@@ -5,14 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -27,11 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -130,8 +119,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
@@ -150,36 +138,10 @@ class MainActivity : ComponentActivity() {
                                             launchSingleTop = true
                                             restoreState = true
                                         }
-                                    }
+                                    },
                                 )
                             }
                         },
-                        floatingActionButton = {
-                            if (isBottomBarActive) {
-                                FloatingActionButton(
-                                    onClick = {
-                                        navController.navigate(Screen.HomeScreen) {
-                                            popUpTo(navController.graph.findStartDestination().id) {
-                                                inclusive = false
-                                            }
-                                            launchSingleTop = true
-                                        }
-                                    },
-                                    containerColor = MaterialTheme.colorScheme.inversePrimary,
-                                    contentColor = Color.White,
-                                    shape = CircleShape,
-                                    modifier = Modifier
-                                        .offset(y = 82.dp)
-                                        .size(54.dp)
-                                ) {
-                                    Icon(
-                                        painter = painterResource(R.drawable.home),
-                                        contentDescription = stringResource(R.string.home_icon)
-                                    )
-                                }
-                            }
-                        },
-                        floatingActionButtonPosition = FabPosition.Center
                     ) { innerPadding ->
                         NavHost(
                             navController = navController,

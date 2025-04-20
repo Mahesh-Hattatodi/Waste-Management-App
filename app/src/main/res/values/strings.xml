@@ -132,6 +132,8 @@
     <string name="enter_ward">Enter ward</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
+    <string name="Home">Home</string>
+    <string name="home">Home</string>
 
     <string-array name="list_of_complaint_category">
         <item name="garbage_collection">Garbage Collection</item>
