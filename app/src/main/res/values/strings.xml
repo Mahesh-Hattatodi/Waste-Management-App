@@ -48,8 +48,8 @@
     <string name="raise_a_complaint">Raise a Complaint</string>
     <string name="submit_complaint">Submit Complaint</string>
     <string name="title_feedback">Feedback</string>
-    <string name="share_your_feedback">Share Your Feedback</string>
-    <string name="please_select_a_topic_below_and_let_us_know_about_your_concern">Please select a topic below and let us know about your concern</string>
+    <string name="share_your_feedback">We value your input!</string>
+    <string name="please_select_a_topic_below_and_let_us_know_about_your_concern">Let us know how we can improve our services</string>
     <string name="submit">Submit</string>
     <string name="feedback_submitted">Feedback Submitted</string>
     <string name="select_topic">Select topic</string>

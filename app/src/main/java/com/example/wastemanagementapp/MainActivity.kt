@@ -15,9 +15,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -118,9 +120,12 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
+
+
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
+                    val (selectedTab, setSelectedTab) = rememberSaveable { mutableIntStateOf(1) }
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         snackbarHost = {
@@ -129,16 +134,17 @@ class MainActivity : ComponentActivity() {
                         bottomBar = {
                             if (isBottomBarActive) {
                                 AppBottomBar(
-                                    onClick = { navEvent ->
-                                        navController.navigate(navEvent.screen) {
+                                    selectedIndex = selectedTab,
+                                    onScreenSelected = { index, screen ->
+                                        setSelectedTab(index)
+                                        navController.navigate(screen) {
                                             popUpTo(navController.graph.findStartDestination().id) {
                                                 saveState = true
-                                                inclusive = false
                                             }
                                             launchSingleTop = true
                                             restoreState = true
                                         }
-                                    },
+                                    }
                                 )
                             }
                         },

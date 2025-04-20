@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -23,6 +24,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -33,11 +35,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
@@ -45,8 +45,11 @@ import com.example.wastemanagementapp.R
 import com.example.wastemanagementapp.complaint.presentation.events.ComplaintEvent
 import com.example.wastemanagementapp.complaint.presentation.state.ComplaintScreenState
 import com.example.wastemanagementapp.complaint.presentation.viewmodel.ComplaintViewModel
+import com.example.wastemanagementapp.core.presentation.TopHeadingComponent
 import com.example.wastemanagementapp.core.util.NavigationEvent
 import com.example.wastemanagementapp.core.util.ObserveAsEvents
+import com.example.wastemanagementapp.ui.theme.MainColor
+import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 
 @Composable
 fun ComplaintScreenContainer(
@@ -98,27 +101,25 @@ fun ComplaintScreen(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            Spacer(modifier = Modifier.height(50.dp))
 
-            Text(
-                text = stringResource(R.string.raise_a_complaint),
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
+            TopHeadingComponent(
+                heading = stringResource(R.string.complaint),
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(26.dp))
 
             // Dropdown for selecting complaint topic
             ExposedDropdownMenuBox(
                 expanded = state.expanded,
                 onExpandedChange = {
                     onEvent(ComplaintEvent.OnToggle(!state.expanded))
-                }
+                },
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
             ) {
                 OutlinedTextField(
                     value = state.selectedCategory,
@@ -167,7 +168,9 @@ fun ComplaintScreen(
                     onEvent(ComplaintEvent.OnNameChange(it))
                 },
                 label = { Text(stringResource(R.string.complaint_enter_name), color = Color.Black) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF386641),
                     unfocusedBorderColor = Color(0xFF386641),
@@ -186,7 +189,9 @@ fun ComplaintScreen(
                     onEvent(ComplaintEvent.OnAddressChange(it))
                 },
                 label = { Text(stringResource(R.string.enter_postal_address), color = Color.Black) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF386641),
                     unfocusedBorderColor = Color(0xFF386641),
@@ -207,6 +212,7 @@ fun ComplaintScreen(
                 label = { Text(stringResource(R.string.enter_complaint_details), color = Color.Black) },
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp)
                     .height(150.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF386641),
@@ -223,9 +229,9 @@ fun ComplaintScreen(
             Button(
                 onClick = { photoPickerLauncher.launch("image/*") },
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .width(256.dp)
                     .height(50.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF386641))
+                colors = ButtonDefaults.buttonColors(containerColor = MainColor)
             ) {
                 Text(stringResource(R.string.add_photo), color = Color.White)
             }
@@ -246,10 +252,10 @@ fun ComplaintScreen(
                     onEvent(ComplaintEvent.SubmitComplaint)
                 },
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .width(256.dp)
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF386641),
+                    containerColor = MainColor,
                     disabledContainerColor = Color(0xFFD3D3D3)
                 ),
                 enabled = !state.isSubmitting
@@ -282,5 +288,7 @@ fun ComplaintScreen(
 @Preview
 @Composable
 fun ComplaintScreenPreview() {
-    ComplaintScreen()
+    WasteManagementAppTheme {
+        ComplaintScreen()
+    }
 }

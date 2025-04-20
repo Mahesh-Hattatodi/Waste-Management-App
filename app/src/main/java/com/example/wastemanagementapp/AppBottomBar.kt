@@ -23,9 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -39,7 +37,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.wastemanagementapp.core.util.NavigationEvent
 import com.example.wastemanagementapp.core.util.Screen
 import com.example.wastemanagementapp.core.presentation.BottomNavigationItem
 import com.example.wastemanagementapp.ui.theme.Green40
@@ -49,10 +46,9 @@ import com.example.wastemanagementapp.ui.theme.WasteManagementAppTheme
 @Composable
 fun AppBottomBar(
     modifier: Modifier = Modifier,
-    onClick: (NavigationEvent.Navigate) -> Unit = {}
+    selectedIndex: Int = 1,
+    onScreenSelected: (Int, Screen) -> Unit = { index, screen ->}
 ) {
-    var selectedScreen by remember { mutableIntStateOf(1) }
-
     val bottomNavigationItems = listOf(
         BottomNavigationItem(
             iconSelected = painterResource(R.drawable.user_icon),
@@ -77,10 +73,7 @@ fun AppBottomBar(
             .fillMaxWidth()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(
-                        LightGreenColor,
-                        Color.White
-                    )
+                    colors = listOf(LightGreenColor, Color.White)
                 )
             )
     ) {
@@ -88,26 +81,27 @@ fun AppBottomBar(
             Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            bottomNavigationItems.forEach { bottomNavigationItem ->
-                val isSelected =
-                    bottomNavigationItem.route == bottomNavigationItems[selectedScreen].route
+            bottomNavigationItems.forEachIndexed { index, item ->
+                val isSelected = index == selectedIndex
+
                 val animatedWeight by animateFloatAsState(
                     targetValue = if (isSelected) 1.5f else 1f
                 )
+
                 Box(
                     modifier = Modifier.weight(animatedWeight),
                     contentAlignment = Alignment.Center,
                 ) {
                     val interactionSource = remember { MutableInteractionSource() }
+
                     BottomNavigationItemComponent(
-                        bottomNavigationItem = bottomNavigationItem,
+                        bottomNavigationItem = item,
                         modifier = Modifier
                             .clickable(
                                 interactionSource = interactionSource,
                                 indication = null
                             ) {
-                                selectedScreen = bottomNavigationItems.indexOf(bottomNavigationItem)
-                                onClick(NavigationEvent.Navigate(bottomNavigationItems[selectedScreen].route))
+                                onScreenSelected(index, item.route)
                             },
                         isSelected = isSelected
                     )
@@ -116,6 +110,7 @@ fun AppBottomBar(
         }
     }
 }
+
 
 @Composable
 fun BottomNavigationItemComponent(
